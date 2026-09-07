@@ -84,7 +84,8 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .target(name: "Indexed Foundation Integration"),
             ],
-            path: "Tests/Indexed Tests"
+            path: "Tests/Indexed Tests",
+            resources: [.copy("Fixtures")]
         ),
     ],
     swiftLanguageModes: [.v6]

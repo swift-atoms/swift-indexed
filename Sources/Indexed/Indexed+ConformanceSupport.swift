@@ -11,8 +11,8 @@ extension Indexed where Bound: ~Copyable {
 
     @inlinable
     package mutating func _clear() {
-        start = end
-        count = .zero
+        _start = end
+        _count = .zero
     }
 }
 
@@ -26,6 +26,6 @@ extension Indexed.Reversed where Bound: ~Copyable {
     @inlinable
     package mutating func _clear() {
         start = end
-        count = .zero
+        _count = .zero
     }
 }

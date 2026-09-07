@@ -17,9 +17,13 @@ public struct Indexed<Bound: ~Copyable> {
         case invalidBounds(start: Index, end: Index)
     }
 
-    public var start: Index
+    @usableFromInline
+    var _start: Index
 
-    public var end: Index
+    @inlinable
+    public var start: Index { _start }
+
+    public let end: Index
 
     @usableFromInline
     var _count: Index.Count
@@ -27,7 +31,6 @@ public struct Indexed<Bound: ~Copyable> {
     @inlinable
     public var count: Index.Count {
         _read { yield _count }
-        _modify { yield &_count }
     }
 
     @usableFromInline
@@ -73,7 +76,6 @@ public struct Indexed<Bound: ~Copyable> {
         @inlinable
         public var count: Index.Count {
             _read { yield _count }
-            _modify { yield &_count }
         }
 
         @usableFromInline
@@ -220,8 +222,7 @@ public struct Indexed<Bound: ~Copyable> {
                     break
                 }
             }
-            start = end
-            count = .zero
+            _clear()
         }
 
         @inlinable
@@ -246,7 +247,7 @@ public struct Indexed<Bound: ~Copyable> {
         count: Index.Count,
         transform: @escaping @Sendable (Index) -> Bound
     ) {
-        self.start = .zero
+        self._start = .zero
         self.end = .zero + count
         self._count = count
         self.transform = transform
@@ -261,7 +262,7 @@ public struct Indexed<Bound: ~Copyable> {
         guard start <= end else {
             throw .invalidBounds(start: start, end: end)
         }
-        self.start = start
+        self._start = start
         self.end = end
 
         do throws(Ordinal::Ordinal.Error) {
@@ -279,7 +280,7 @@ public struct Indexed<Bound: ~Copyable> {
         end: Index,
         transform: @escaping @Sendable (Index) -> Bound
     ) {
-        self.start = start
+        self._start = start
         self.end = end
 
         do throws(Ordinal::Ordinal.Error) {
@@ -324,8 +325,7 @@ public struct Indexed<Bound: ~Copyable> {
 
             i += .one
         }
-        start = end
-        count = .zero
+        _clear()
     }
 
     @inlinable
