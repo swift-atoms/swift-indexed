@@ -1,9 +1,8 @@
-public import Cardinal_Standard_Library_Integration
+public import Cardinal
 public import Index
 public import Ordinal
-public import Ordinal_Standard_Library_Integration
 
-extension UnsafeRawBufferPointer {
+extension Swift.UnsafeRawBufferPointer {
 
     @inlinable
     public init<Tag: ~Copyable & ~Escapable>(

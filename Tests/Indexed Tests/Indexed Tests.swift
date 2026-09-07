@@ -1,7 +1,6 @@
 import Cardinal
 import Ordinal
 import Tagged
-import Tagged_Standard_Library_Integration
 import Testing
 import Indexed_Test_Support
 

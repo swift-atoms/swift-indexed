@@ -345,10 +345,14 @@ public struct Indexed<Bound: ~Copyable> {
     }
 }
 
-extension Indexed: Sendable where Bound: Sendable {}
-extension Indexed.Iterator: Sendable where Bound: Sendable {}
-extension Indexed.Reversed: Sendable where Bound: Sendable {}
-extension Indexed.Reversed.Iterator: Sendable where Bound: Sendable {}
+extension Indexed: Swift.Sendable where Bound: Swift.Sendable {}
 
-extension Indexed.Iterator: Copyable where Bound: Copyable {}
-extension Indexed.Reversed.Iterator: Copyable where Bound: Copyable {}
+extension Indexed.Iterator: Swift.Sendable where Bound: Swift.Sendable {}
+
+extension Indexed.Reversed: Swift.Sendable where Bound: Swift.Sendable {}
+
+extension Indexed.Reversed.Iterator: Swift.Sendable where Bound: Swift.Sendable {}
+
+extension Indexed.Iterator: Swift.Copyable where Bound: Swift.Copyable {}
+
+extension Indexed.Reversed.Iterator: Swift.Copyable where Bound: Swift.Copyable {}

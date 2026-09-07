@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(name: "Indexed", targets: ["Indexed"]),
-        .library(name: "Indexed Standard Library Integration", targets: ["Indexed Standard Library Integration"]),
-        .library(name: "Indexed Foundation Library Integration", targets: ["Indexed Foundation Library Integration"]),
+
+        .library(name: "Indexed Foundation Integration", targets: ["Indexed Foundation Integration"]),
         .library(name: "Indexed Test Support", targets: ["Indexed Test Support"]),
     ],
     dependencies: [
@@ -56,24 +56,13 @@ let package = Package(
             ],
             path: "Sources/Indexed"
         ),
+        
         .target(
-            name: "Indexed Standard Library Integration",
-            dependencies: [
-                .product(name: "Index", package: "swift-index"),
-                .product(name: "Cardinal Standard Library Integration", package: "swift-cardinal"),
-                .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Standard Library Integration", package: "swift-ordinal"),
-                .target(name: "Indexed"),
-            ],
-            path: "Sources/Indexed Standard Library Integration"
-        ),
-        .target(
-            name: "Indexed Foundation Library Integration",
+            name: "Indexed Foundation Integration",
             dependencies: [
                 .target(name: "Indexed"),
-                .target(name: "Indexed Standard Library Integration"),
             ],
-            path: "Sources/Indexed Foundation Library Integration"
+            path: "Sources/Indexed Foundation Integration"
         ),
         .target(
             name: "Indexed Test Support",
@@ -92,10 +81,8 @@ let package = Package(
                 .target(name: "Indexed Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .target(name: "Indexed Standard Library Integration"),
-                .target(name: "Indexed Foundation Library Integration"),
+                .target(name: "Indexed Foundation Integration"),
             ],
             path: "Tests/Indexed Tests"
         ),
