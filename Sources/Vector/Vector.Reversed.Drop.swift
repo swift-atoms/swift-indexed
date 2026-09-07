@@ -1,8 +1,4 @@
 public import Ordinal
-public import Ordinal_Error
-public import Ordinal_Protocol
-public import Ordinal_Predecessor
-public import Ordinal_Retreat
 public import Tagged
 
 extension Vector.Reversed {

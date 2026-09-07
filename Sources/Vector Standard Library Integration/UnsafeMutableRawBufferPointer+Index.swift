@@ -1,6 +1,6 @@
 public import Cardinal_Standard_Library_Integration
 public import Index
-public import Ordinal_Protocol
+public import Ordinal
 public import Ordinal_Standard_Library_Integration
 
 extension UnsafeMutableRawBufferPointer {

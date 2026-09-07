@@ -61,19 +61,9 @@ let package = Package(
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Property Inout", package: "swift-property"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Error", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Cardinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Advance", package: "swift-ordinal"),
-                .product(name: "Ordinal Retreat", package: "swift-ordinal"),
-                .product(name: "Ordinal Predecessor", package: "swift-ordinal"),
-                .product(name: "Ordinal Distance", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
-                .product(name: "Affine Arithmetic", package: "swift-affine"),
-                .product(name: "Affine Tagged", package: "swift-affine"),
+                .product(name: "Affine", package: "swift-affine"),
             ]
         ),
 
@@ -85,7 +75,7 @@ let package = Package(
                     name: "Cardinal Standard Library Integration",
                     package: "swift-cardinal"
                 ),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(
                     name: "Ordinal Standard Library Integration",
                     package: "swift-ordinal"
@@ -99,8 +89,6 @@ let package = Package(
                 .target(name: "Vector"),
                 .product(name: "Index Test Support", package: "swift-index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Tests/Support"
@@ -111,16 +99,12 @@ let package = Package(
                 .target(name: "Vector"),
                 .target(name: "Vector Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(
                     name: "Tagged Standard Library Integration",
                     package: "swift-tagged"
                 ),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
-                .product(name: "Ordinal Distance", package: "swift-ordinal"),
-                .product(name: "Ordinal Tagged", package: "swift-ordinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
             ]
         ),
     ],

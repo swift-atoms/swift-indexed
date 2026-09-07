@@ -1,7 +1,5 @@
-public import Cardinal_Carrier
+public import Cardinal
 public import Ordinal
-public import Ordinal_Protocol
-public import Ordinal_Advance
 public import Tagged
 
 extension Vector {

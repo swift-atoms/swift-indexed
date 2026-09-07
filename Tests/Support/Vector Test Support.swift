@@ -1,7 +1,5 @@
 import Index_Test_Support
 public import Ordinal
-public import Ordinal_Protocol
-public import Ordinal_Tagged
 public import Tagged
 public import Vector
 

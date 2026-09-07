@@ -1,7 +1,5 @@
 public import Index
 public import Ordinal
-public import Ordinal_Cardinal
-public import Ordinal_Protocol
 public import Tagged
 
 @inlinable

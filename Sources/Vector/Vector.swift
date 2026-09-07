@@ -1,12 +1,6 @@
 public import Cardinal
-public import Cardinal_Carrier
 public import Index
 public import Ordinal
-public import Ordinal_Distance
-public import Ordinal_Error
-public import Ordinal_Predecessor
-public import Ordinal_Protocol
-public import Ordinal_Tagged
 public import Property_Inout
 public import Tagged
 internal import Property

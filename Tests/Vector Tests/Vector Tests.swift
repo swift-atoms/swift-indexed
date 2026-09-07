@@ -1,9 +1,5 @@
 import Cardinal
-import Cardinal_Carrier
-import Cardinal_Tagged
-import Ordinal_Distance
-import Ordinal_Protocol
-import Ordinal_Tagged
+import Ordinal
 import Tagged
 import Tagged_Standard_Library_Integration
 import Testing
@@ -1073,5 +1069,19 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
 
         let prefixed = vector.prefix.first(15)
         #expect(prefixed.count == 15)
+    }
+}
+
+extension VectorTests.Unit {
+    @Test
+    func `index vector offsets respect forward and reversed bounds`() {
+        enum Domain {}
+        let start = Tagged<Domain, Ordinal>(2)
+        let end = Tagged<Domain, Ordinal>(5)
+        let vector = Vector(start..<end)
+        #expect(vector[.init(0)] == start)
+        #expect(vector[.init(2)] == Tagged<Domain, Ordinal>(4))
+        #expect(vector.reversed()[.init(0)] == Tagged<Domain, Ordinal>(4))
+        #expect(vector.reversed()[.init(2)] == start)
     }
 }

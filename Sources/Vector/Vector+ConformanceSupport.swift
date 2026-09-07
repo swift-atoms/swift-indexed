@@ -1,5 +1,5 @@
-public import Cardinal_Carrier
-public import Ordinal_Protocol
+public import Cardinal
+public import Ordinal
 public import Tagged
 
 extension Vector where Bound: ~Copyable {

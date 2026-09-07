@@ -1,10 +1,6 @@
-public import Affine_Arithmetic
-public import Affine_Tagged
+public import Affine
 public import Index
 public import Ordinal
-public import Ordinal_Error
-public import Ordinal_Predecessor
-public import Ordinal_Protocol
 public import Tagged
 
 extension Vector {
@@ -32,7 +28,10 @@ extension Vector {
         -> Index::Index<Tag>
     where Bound == Index::Index<Tag> {
         let vectorOffset: Vector<Bound>.Index.Offset = offset.retag()
-        precondition(vectorOffset < count, "Offset out of bounds")
+        precondition(
+            vectorOffset >= .zero && vectorOffset.difference.magnitude.value < count.underlying,
+            "Offset out of bounds"
+        )
 
         let position: Vector<Bound>.Index
         do throws(Ordinal::Ordinal.Error) {
@@ -51,7 +50,10 @@ extension Vector.Reversed {
         -> Index::Index<Tag>
     where Bound == Index::Index<Tag> {
         let vectorOffset: Vector<Bound>.Index.Offset = offset.retag()
-        precondition(vectorOffset < count, "Offset out of bounds")
+        precondition(
+            vectorOffset >= .zero && vectorOffset.difference.magnitude.value < count.underlying,
+            "Offset out of bounds"
+        )
 
         let position: Vector<Bound>.Index
         do throws(Ordinal::Ordinal.Error) {
