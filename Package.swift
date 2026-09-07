@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-vector",
+    name: "swift-indexed",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -12,10 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(name: "Vector", targets: ["Vector"]),
-        .library(name: "Vector Standard Library Integration", targets: ["Vector Standard Library Integration"]),
-        .library(name: "Vector Foundation Library Integration", targets: ["Vector Foundation Library Integration"]),
-        .library(name: "Vector Test Support", targets: ["Vector Test Support"]),
+        .library(name: "Indexed", targets: ["Indexed"]),
+        .library(name: "Indexed Standard Library Integration", targets: ["Indexed Standard Library Integration"]),
+        .library(name: "Indexed Foundation Library Integration", targets: ["Indexed Foundation Library Integration"]),
+        .library(name: "Indexed Test Support", targets: ["Indexed Test Support"]),
     ],
     dependencies: [
         .package(
@@ -45,7 +45,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Vector",
+            name: "Indexed",
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Property", package: "swift-property"),
@@ -54,31 +54,31 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Affine", package: "swift-affine"),
             ],
-            path: "Sources/Vector"
+            path: "Sources/Indexed"
         ),
         .target(
-            name: "Vector Standard Library Integration",
+            name: "Indexed Standard Library Integration",
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal Standard Library Integration", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Ordinal Standard Library Integration", package: "swift-ordinal"),
-                .target(name: "Vector"),
+                .target(name: "Indexed"),
             ],
-            path: "Sources/Vector Standard Library Integration"
+            path: "Sources/Indexed Standard Library Integration"
         ),
         .target(
-            name: "Vector Foundation Library Integration",
+            name: "Indexed Foundation Library Integration",
             dependencies: [
-                .target(name: "Vector"),
-                .target(name: "Vector Standard Library Integration"),
+                .target(name: "Indexed"),
+                .target(name: "Indexed Standard Library Integration"),
             ],
-            path: "Sources/Vector Foundation Library Integration"
+            path: "Sources/Indexed Foundation Library Integration"
         ),
         .target(
-            name: "Vector Test Support",
+            name: "Indexed Test Support",
             dependencies: [
-                .target(name: "Vector"),
+                .target(name: "Indexed"),
                 .product(name: "Index Test Support", package: "swift-index"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
@@ -86,18 +86,18 @@ let package = Package(
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Vector Tests",
+            name: "Indexed Tests",
             dependencies: [
-                .target(name: "Vector"),
-                .target(name: "Vector Test Support"),
+                .target(name: "Indexed"),
+                .target(name: "Indexed Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .target(name: "Vector Standard Library Integration"),
-                .target(name: "Vector Foundation Library Integration"),
+                .target(name: "Indexed Standard Library Integration"),
+                .target(name: "Indexed Foundation Library Integration"),
             ],
-            path: "Tests/Vector Tests"
+            path: "Tests/Indexed Tests"
         ),
     ],
     swiftLanguageModes: [.v6]

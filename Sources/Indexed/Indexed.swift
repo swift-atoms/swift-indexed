@@ -4,9 +4,9 @@ public import Ordinal
 public import Property
 public import Tagged
 
-public struct Vector<Bound: ~Copyable> {
+public struct Indexed<Bound: ~Copyable> {
 
-    public typealias Index = Index::Index<Vector<Bound>>
+    public typealias Index = Index::Index<Indexed<Bound>>
 
     public enum ForEach {}
 
@@ -345,10 +345,10 @@ public struct Vector<Bound: ~Copyable> {
     }
 }
 
-extension Vector: Sendable where Bound: Sendable {}
-extension Vector.Iterator: Sendable where Bound: Sendable {}
-extension Vector.Reversed: Sendable where Bound: Sendable {}
-extension Vector.Reversed.Iterator: Sendable where Bound: Sendable {}
+extension Indexed: Sendable where Bound: Sendable {}
+extension Indexed.Iterator: Sendable where Bound: Sendable {}
+extension Indexed.Reversed: Sendable where Bound: Sendable {}
+extension Indexed.Reversed.Iterator: Sendable where Bound: Sendable {}
 
-extension Vector.Iterator: Copyable where Bound: Copyable {}
-extension Vector.Reversed.Iterator: Copyable where Bound: Copyable {}
+extension Indexed.Iterator: Copyable where Bound: Copyable {}
+extension Indexed.Reversed.Iterator: Copyable where Bound: Copyable {}

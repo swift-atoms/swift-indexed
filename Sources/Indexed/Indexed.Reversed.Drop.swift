@@ -1,25 +1,25 @@
 public import Ordinal
 public import Tagged
 
-extension Vector.Reversed {
+extension Indexed.Reversed {
 
     public struct Drop: ~Copyable {
         @usableFromInline
-        var base: Vector<Bound>.Reversed
+        var base: Indexed<Bound>.Reversed
 
         @inlinable
-        package init(_ base: Vector<Bound>.Reversed) {
+        package init(_ base: Indexed<Bound>.Reversed) {
             self.base = base
         }
     }
 }
 
-extension Vector.Reversed.Drop where Bound: Copyable {
+extension Indexed.Reversed.Drop where Bound: Copyable {
 
     @inlinable
-    public consuming func first(_ count: Vector<Bound>.Index.Count) -> Vector<Bound>.Reversed {
+    public consuming func first(_ count: Indexed<Bound>.Index.Count) -> Indexed<Bound>.Reversed {
         let newEnd = base.end.retreat.clamped(by: count, to: base.start)
-        return Vector<Bound>.Reversed(
+        return Indexed<Bound>.Reversed(
             __unchecked: (),
             start: base.start,
             end: newEnd,
@@ -33,7 +33,7 @@ extension Vector.Reversed.Drop where Bound: Copyable {
         var dropping = true
         guard !base.isEmpty else { return result }
 
-        let initial: Vector<Bound>.Index
+        let initial: Indexed<Bound>.Index
         do throws(Ordinal::Ordinal.Error) {
             initial = try base.end.predecessor.exact()
         } catch {
@@ -66,7 +66,7 @@ extension Vector.Reversed.Drop where Bound: Copyable {
     }
 }
 
-extension Vector.Reversed where Bound: Copyable {
+extension Indexed.Reversed where Bound: Copyable {
 
     @inlinable
     public var drop: Drop {

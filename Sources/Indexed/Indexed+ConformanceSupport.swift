@@ -2,7 +2,7 @@ public import Cardinal
 public import Ordinal
 public import Tagged
 
-extension Vector where Bound: ~Copyable {
+extension Indexed where Bound: ~Copyable {
 
     @inlinable
     package borrowing func _makeSequenceIterator() -> Iterator {
@@ -16,7 +16,7 @@ extension Vector where Bound: ~Copyable {
     }
 }
 
-extension Vector.Reversed where Bound: ~Copyable {
+extension Indexed.Reversed where Bound: ~Copyable {
 
     @inlinable
     package borrowing func _makeSequenceIterator() -> Iterator {

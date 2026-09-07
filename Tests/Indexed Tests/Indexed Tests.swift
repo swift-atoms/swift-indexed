@@ -3,9 +3,9 @@ import Ordinal
 import Tagged
 import Tagged_Standard_Library_Integration
 import Testing
-import Vector_Test_Support
+import Indexed_Test_Support
 
-@testable import Vector
+@testable import Indexed
 
 enum VectorTests {
     @Suite struct Unit {}
@@ -17,32 +17,32 @@ extension VectorTests.Unit {
 
     @Test
     func `init creates vector with correct bounds`() throws(VectorTestError) {
-        let vector: Vector = try Vector(0..<10) { $0 }
+        let vector: Indexed = try Indexed(0..<10) { $0 }
         #expect(vector.count == 10)
         #expect(!vector.isEmpty)
     }
 
     @Test
     func `count property returns correct value`() throws(VectorTestError) {
-        let vector = try Vector(5..<15) { $0 }
+        let vector = try Indexed(5..<15) { $0 }
         #expect(vector.count == 10)
     }
 
     @Test
     func `isEmpty returns true for empty vector`() throws(VectorTestError) {
-        let vector = try Vector(5..<5) { $0 }
+        let vector = try Indexed(5..<5) { $0 }
         #expect(vector.isEmpty)
     }
 
     @Test
     func `isEmpty returns false for non-empty vector`() throws(VectorTestError) {
-        let vector = try Vector(0..<1) { $0 }
+        let vector = try Indexed(0..<1) { $0 }
         #expect(!vector.isEmpty)
     }
 
     @Test
     func `transform applies correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 * 2 }
+        let vector = try Indexed(0..<5) { $0 * 2 }
         var results: [Int] = []
         vector.forEach { results.append($0) }
         #expect(results == [0, 2, 4, 6, 8])
@@ -50,8 +50,8 @@ extension VectorTests.Unit {
 
     @Test
     func `makeIterator produces correct sequence`() throws(VectorTestError) {
-        let vector = try Vector(0..<3) { $0 + 10 }
-        var iterator: Vector<Int>.Iterator = vector.makeIterator()
+        let vector = try Indexed(0..<3) { $0 + 10 }
+        var iterator: Indexed<Int>.Iterator = vector.makeIterator()
         #expect(iterator.next() == 10)
         #expect(iterator.next() == 11)
         #expect(iterator.next() == 12)
@@ -60,7 +60,7 @@ extension VectorTests.Unit {
 
     @Test
     func `reversed produces elements in reverse order`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         let reversed = vector.reversed()
         var results: [Int] = []
         reversed.forEach { results.append($0) }
@@ -69,34 +69,34 @@ extension VectorTests.Unit {
 
     @Test
     func `first returns matching element`() throws(VectorTestError) {
-        var vector = try Vector(0..<10) { $0 * 2 }
+        var vector = try Indexed(0..<10) { $0 * 2 }
         let result = vector.first { $0 > 10 }
         #expect(result == 12)
     }
 
     @Test
     func `first returns nil when no match`() throws(VectorTestError) {
-        var vector = try Vector(0..<10) { $0 }
+        var vector = try Indexed(0..<10) { $0 }
         let result = vector.first { $0 > 100 }
         #expect(result == nil)
     }
 
     @Test
     func `count(where:) returns correct count`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let evenCount = vector.count(where: { $0 % 2 == 0 })
         #expect(evenCount == 5)
     }
 
     @Test
     func `contains returns true when predicate matches`() throws(VectorTestError) {
-        var vector = try Vector(0..<10) { $0 }
+        var vector = try Indexed(0..<10) { $0 }
         #expect(vector.contains { $0 == 7 })
     }
 
     @Test
     func `contains returns false when predicate doesn't match`() throws(VectorTestError) {
-        var vector = try Vector(0..<10) { $0 }
+        var vector = try Indexed(0..<10) { $0 }
         #expect(!vector.contains { $0 == 100 })
     }
 }
@@ -105,7 +105,7 @@ extension VectorTests.`Edge Case` {
 
     @Test
     func `empty vector forEach does nothing`() throws(VectorTestError) {
-        let vector = try Vector(0..<0) { $0 }
+        let vector = try Indexed(0..<0) { $0 }
         var count = 0
         vector.forEach { _ in count += 1 }
         #expect(count == 0)
@@ -113,19 +113,19 @@ extension VectorTests.`Edge Case` {
 
     @Test
     func `empty vector first returns nil`() throws(VectorTestError) {
-        var vector = try Vector(0..<0) { $0 }
+        var vector = try Indexed(0..<0) { $0 }
         #expect(vector.first { _ in true } == nil)
     }
 
     @Test
     func `empty vector count(where:) returns zero`() throws(VectorTestError) {
-        let vector = try Vector(0..<0) { $0 }
+        let vector = try Indexed(0..<0) { $0 }
         #expect(vector.count(where: { _ in true }) == 0)
     }
 
     @Test
     func `single element vector works correctly`() throws(VectorTestError) {
-        var vector = try Vector(0..<1) { $0 * 10 }
+        var vector = try Indexed(0..<1) { $0 * 10 }
         #expect(vector.count == 1)
         #expect(vector.first { _ in true } == 0)
 
@@ -136,13 +136,13 @@ extension VectorTests.`Edge Case` {
 
     @Test
     func `large vector count is efficient (O(1))`() throws(VectorTestError) {
-        let vector = try Vector(0..<1_000_000) { $0 }
+        let vector = try Indexed(0..<1_000_000) { $0 }
         #expect(vector.count == 1_000_000)
     }
 
     @Test
     func `negative transform values work`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { -$0 }
+        let vector = try Indexed(0..<5) { -$0 }
         var results: [Int] = []
         vector.forEach { results.append($0) }
         #expect(results == [0, -1, -2, -3, -4])
@@ -158,23 +158,23 @@ extension VectorReversedTests.Unit {
 
     @Test
     func `reversed count matches original`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
         #expect(reversed.count == 10)
     }
 
     @Test
     func `reversed isEmpty matches original`() throws(VectorTestError) {
-        let vector = try Vector(5..<5) { $0 }
+        let vector = try Indexed(5..<5) { $0 }
         let reversed = vector.reversed()
         #expect(reversed.isEmpty)
     }
 
     @Test
     func `reversed iterator produces correct order`() throws(VectorTestError) {
-        let vector = try Vector(0..<3) { $0 }
+        let vector = try Indexed(0..<3) { $0 }
         let reversed = vector.reversed()
-        var iterator: Vector<Int>.Reversed.Iterator = reversed.makeIterator()
+        var iterator: Indexed<Int>.Reversed.Iterator = reversed.makeIterator()
         #expect(iterator.next() == 2)
         #expect(iterator.next() == 1)
         #expect(iterator.next() == 0)
@@ -183,7 +183,7 @@ extension VectorReversedTests.Unit {
 
     @Test
     func `reversed first finds from end`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         var reversed = vector.reversed()
         let result = reversed.first { $0 < 5 }
         #expect(result == 4)
@@ -191,7 +191,7 @@ extension VectorReversedTests.Unit {
 
     @Test
     func `reversed count(where:) works correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
         #expect(reversed.count(where: { $0 % 2 == 0 }) == 5)
     }
@@ -202,7 +202,7 @@ extension VectorReversedTests.`Edge Case` {
 
     @Test
     func `empty reversed vector works`() throws(VectorTestError) {
-        let vector = try Vector(0..<0) { $0 }
+        let vector = try Indexed(0..<0) { $0 }
         var reversed = vector.reversed()
         #expect(reversed.isEmpty)
         #expect(reversed.first { _ in true } == nil)
@@ -210,7 +210,7 @@ extension VectorReversedTests.`Edge Case` {
 
     @Test
     func `single element reversed works`() throws(VectorTestError) {
-        let vector = try Vector(0..<1) { $0 * 5 }
+        let vector = try Indexed(0..<1) { $0 * 5 }
         let reversed = vector.reversed()
         #expect(reversed.count == 1)
         var results: [Int] = []
@@ -231,8 +231,8 @@ extension VectorInvariantTests.Iterator {
 
     @Test
     func `INVARIANT: Iterator returns nil forever after exhaustion`() throws(VectorTestError) {
-        let vector = try Vector(0..<3) { $0 }
-        var iterator: Vector<Int>.Iterator = vector.makeIterator()
+        let vector = try Indexed(0..<3) { $0 }
+        var iterator: Indexed<Int>.Iterator = vector.makeIterator()
 
         _ = iterator.next()
         _ = iterator.next()
@@ -247,8 +247,8 @@ extension VectorInvariantTests.Iterator {
     func `INVARIANT: Reversed iterator returns nil forever after exhaustion`()
         throws(VectorTestError)
     {
-        let vector = try Vector(0..<3) { $0 }
-        var iterator: Vector<Int>.Reversed.Iterator = vector.reversed().makeIterator()
+        let vector = try Indexed(0..<3) { $0 }
+        var iterator: Indexed<Int>.Reversed.Iterator = vector.reversed().makeIterator()
 
         _ = iterator.next()
         _ = iterator.next()
@@ -261,8 +261,8 @@ extension VectorInvariantTests.Iterator {
 
     @Test
     func `INVARIANT: Empty iterator returns nil immediately and forever`() throws(VectorTestError) {
-        let vector = try Vector(0..<0) { $0 }
-        var iterator: Vector<Int>.Iterator = vector.makeIterator()
+        let vector = try Indexed(0..<0) { $0 }
+        var iterator: Indexed<Int>.Iterator = vector.makeIterator()
 
         for _ in 0..<100 {
             #expect(iterator.next() == nil)
@@ -272,9 +272,9 @@ extension VectorInvariantTests.Iterator {
     @Test
     func `INVARIANT: Iterator count matches vector.count exactly`() throws(VectorTestError) {
         for size in [0, 1, 2, 10, 100, 1000] {
-            let vector = try Vector(0..<size) { $0 }
-            var iterator: Vector<Int>.Iterator = vector.makeIterator()
-            var iteratedCount: Vector<Int>.Index.Count = 0
+            let vector = try Indexed(0..<size) { $0 }
+            var iterator: Indexed<Int>.Iterator = vector.makeIterator()
+            var iteratedCount: Indexed<Int>.Index.Count = 0
 
             while iterator.next() != nil {
                 iteratedCount += 1
@@ -291,9 +291,9 @@ extension VectorInvariantTests.Iterator {
     func `INVARIANT: Reversed iterator count matches vector.count exactly`() throws(VectorTestError)
     {
         for size in [0, 1, 2, 10, 100, 1000] {
-            let vector = try Vector(0..<size) { $0 }
-            var iterator: Vector<Int>.Reversed.Iterator = vector.reversed().makeIterator()
-            var iteratedCount: Vector<Int>.Index.Count = 0
+            let vector = try Indexed(0..<size) { $0 }
+            var iterator: Indexed<Int>.Reversed.Iterator = vector.reversed().makeIterator()
+            var iteratedCount: Indexed<Int>.Index.Count = 0
 
             while iterator.next() != nil {
                 iteratedCount += 1
@@ -312,8 +312,8 @@ extension VectorInvariantTests.Consistency {
     @Test
     func `INVARIANT: contains(predicate) == (first(predicate) != nil)`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
-            var vector1 = try Vector(0..<size) { $0 }
-            var vector2 = try Vector(0..<size) { $0 }
+            var vector1 = try Indexed(0..<size) { $0 }
+            var vector2 = try Indexed(0..<size) { $0 }
 
             let containsEven = vector1.contains { $0 % 2 == 0 }
             let firstEven = vector2.first { $0 % 2 == 0 }
@@ -322,8 +322,8 @@ extension VectorInvariantTests.Consistency {
                 "Size \(size): contains(even) = \(containsEven), first != nil = \(firstEven != nil)"
             )
 
-            var vector3 = try Vector(0..<size) { $0 }
-            var vector4 = try Vector(0..<size) { $0 }
+            var vector3 = try Indexed(0..<size) { $0 }
+            var vector4 = try Indexed(0..<size) { $0 }
             let containsNegative = vector3.contains { $0 < 0 }
             let firstNegative = vector4.first { $0 < 0 }
             #expect(containsNegative == (firstNegative != nil))
@@ -333,7 +333,7 @@ extension VectorInvariantTests.Consistency {
     @Test
     func `INVARIANT: count(where: { true }) == count property`() throws(VectorTestError) {
         for size in [0, 1, 5, 100] {
-            let vector = try Vector(0..<size) { $0 }
+            let vector = try Indexed(0..<size) { $0 }
             let countWhere = vector.count(where: { _ in true })
             #expect(
                 countWhere == vector.count,
@@ -345,7 +345,7 @@ extension VectorInvariantTests.Consistency {
     @Test
     func `INVARIANT: count(where: { false }) == 0`() throws(VectorTestError) {
         for size in [0, 1, 5, 100] {
-            let vector = try Vector(0..<size) { $0 }
+            let vector = try Indexed(0..<size) { $0 }
             let countWhere = vector.count(where: { _ in false })
             #expect(
                 countWhere == 0,
@@ -358,17 +358,17 @@ extension VectorInvariantTests.Consistency {
     func `INVARIANT: Transform is deterministic - same index gives same value`()
         throws(VectorTestError)
     {
-        let vector = try Vector(0..<5) { i in
+        let vector = try Indexed(0..<5) { i in
             i * 7 + 3
         }
 
         var results1: [Int] = []
         var results2: [Int] = []
 
-        var iter1: Vector<Int>.Iterator = vector.makeIterator()
+        var iter1: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter1.next() { results1.append(v) }
 
-        var iter2: Vector<Int>.Iterator = vector.makeIterator()
+        var iter2: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter2.next() { results2.append(v) }
 
         #expect(results1 == results2)
@@ -380,7 +380,7 @@ extension VectorInvariantTests.Drain {
 
     @Test
     func `INVARIANT: drain empties the vector completely`() throws(VectorTestError) {
-        var vector = try Vector(0..<10) { $0 }
+        var vector = try Indexed(0..<10) { $0 }
         var drained: [Int] = []
 
         vector.drain { drained.append($0) }
@@ -391,7 +391,7 @@ extension VectorInvariantTests.Drain {
 
     @Test
     func `INVARIANT: drain on empty vector does nothing`() throws(VectorTestError) {
-        var vector = try Vector(0..<0) { $0 }
+        var vector = try Indexed(0..<0) { $0 }
         var drainCount = 0
 
         vector.drain { _ in drainCount += 1 }
@@ -402,7 +402,7 @@ extension VectorInvariantTests.Drain {
 
     @Test
     func `INVARIANT: double drain yields nothing second time`() throws(VectorTestError) {
-        var vector = try Vector(0..<5) { $0 }
+        var vector = try Indexed(0..<5) { $0 }
         var first: [Int] = []
         var second: [Int] = []
 
@@ -415,7 +415,7 @@ extension VectorInvariantTests.Drain {
 
     @Test
     func `INVARIANT: reversed drain empties the vector completely`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         var reversed = vector.reversed()
         var drained: [Int] = []
 
@@ -434,10 +434,10 @@ extension VectorInvariantTests.Symmetry {
             var forward: [Int] = []
             var backward: [Int] = []
 
-            let vector1 = try Vector(0..<size) { $0 }
+            let vector1 = try Indexed(0..<size) { $0 }
             vector1.forEach { forward.append($0) }
 
-            let vector2 = try Vector(0..<size) { $0 }
+            let vector2 = try Indexed(0..<size) { $0 }
             let reversed = vector2.reversed()
             reversed.forEach { backward.append($0) }
 
@@ -457,8 +457,8 @@ extension VectorInvariantTests.Symmetry {
     @Test
     func `INVARIANT: count(where:) same for forward and reversed`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
-            let vector1 = try Vector(0..<size) { $0 }
-            let vector2 = try Vector(0..<size) { $0 }
+            let vector1 = try Indexed(0..<size) { $0 }
+            let vector2 = try Indexed(0..<size) { $0 }
 
             let forwardCount = vector1.count(where: { $0 % 2 == 0 })
             let backwardCount = vector2.reversed().count(where: { $0 % 2 == 0 })
@@ -473,9 +473,9 @@ extension VectorInvariantTests.Boundaries {
 
     @Test
     func `INVARIANT: Offset vectors work correctly`() throws(VectorTestError) {
-        let vector = try Vector(100..<105) { $0 }
+        let vector = try Indexed(100..<105) { $0 }
         var results: [Int] = []
-        var iter: Vector<Int>.Iterator = vector.makeIterator()
+        var iter: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter.next() { results.append(v) }
 
         #expect(results == [100, 101, 102, 103, 104])
@@ -485,11 +485,11 @@ extension VectorInvariantTests.Boundaries {
     @Test
     func `INVARIANT: Large offset vectors work correctly`() throws(VectorTestError) {
         let start = 1_000_000
-        let vector = try Vector(start..<(start + 5)) { $0 }
+        let vector = try Indexed(start..<(start + 5)) { $0 }
 
         #expect(vector.count == 5)
 
-        var iter: Vector<Int>.Iterator = vector.makeIterator()
+        var iter: Indexed<Int>.Iterator = vector.makeIterator()
         #expect(iter.next() == 1_000_000)
         #expect(iter.next() == 1_000_001)
     }
@@ -497,9 +497,9 @@ extension VectorInvariantTests.Boundaries {
     @Test
     func `INVARIANT: Transform with overflow-safe arithmetic`() throws(VectorTestError) {
 
-        let vector = try Vector(0..<5) { Int.max - 10 + $0 }
+        let vector = try Indexed(0..<5) { Int.max - 10 + $0 }
         var results: [Int] = []
-        var iter: Vector<Int>.Iterator = vector.makeIterator()
+        var iter: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter.next() { results.append(v) }
 
         #expect(results.count == 5)
@@ -509,11 +509,11 @@ extension VectorInvariantTests.Boundaries {
 
     @Test
     func `INVARIANT: Negative start vectors work`() throws(VectorTestError) {
-        let vector = try Vector(-5..<5) { $0 }
+        let vector = try Indexed(-5..<5) { $0 }
         #expect(vector.count == 10)
 
         var results: [Int] = []
-        var iter: Vector<Int>.Iterator = vector.makeIterator()
+        var iter: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter.next() { results.append(v) }
 
         #expect(results == [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4])
@@ -522,10 +522,10 @@ extension VectorInvariantTests.Boundaries {
     @Test
     func `INVARIANT: Complex transform maintains invariants`() throws(VectorTestError) {
 
-        let vector = try Vector(1..<6) { n in n * (n + 1) / 2 }
+        let vector = try Indexed(1..<6) { n in n * (n + 1) / 2 }
 
         var results: [Int] = []
-        var iter: Vector<Int>.Iterator = vector.makeIterator()
+        var iter: Indexed<Int>.Iterator = vector.makeIterator()
         while let v = iter.next() { results.append(v) }
 
         #expect(results == [1, 3, 6, 10, 15])
@@ -534,14 +534,14 @@ extension VectorInvariantTests.Boundaries {
 
     @Test
     func `INVARIANT: first returns first matching, not any matching`() throws(VectorTestError) {
-        var vector = try Vector(0..<100) { $0 }
+        var vector = try Indexed(0..<100) { $0 }
         let result = vector.first { $0 > 50 }
         #expect(result == 51, "first should return 51, not any value > 50")
     }
 
     @Test
     func `INVARIANT: reversed first returns last matching from original`() throws(VectorTestError) {
-        let vector = try Vector(0..<100) { $0 }
+        let vector = try Indexed(0..<100) { $0 }
         var reversed = vector.reversed()
         let result = reversed.first { $0 < 50 }
         #expect(result == 49, "reversed first should return 49 (last element < 50)")
@@ -557,15 +557,15 @@ extension VectorStressTests.Stress {
     @Test
     func `STRESS: Many small vectors maintain invariants`() throws(VectorTestError) {
         for i in 0..<100 {
-            let vector = try Vector(i..<(i + 10)) { $0 * 2 }
+            let vector = try Indexed(i..<(i + 10)) { $0 * 2 }
             #expect(vector.count == 10)
 
             var sum = 0
-            var iter: Vector<Int>.Iterator = vector.makeIterator()
+            var iter: Indexed<Int>.Iterator = vector.makeIterator()
             while let v = iter.next() { sum += v }
 
             let expected = (i..<(i + 10)).map { $0 * 2 }.reduce(0, +)
-            #expect(sum == expected, "Vector starting at \(i): sum \(sum) != expected \(expected)")
+            #expect(sum == expected, "Indexed starting at \(i): sum \(sum) != expected \(expected)")
         }
     }
 
@@ -581,8 +581,8 @@ enum VectorDropPrefixTests {
 extension VectorDropPrefixTests.Drop {
 
     @Test
-    func `drop.first returns Vector with adjusted start (O(1))`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+    func `drop.first returns Indexed with adjusted start (O(1))`() throws(VectorTestError) {
+        let vector = try Indexed(0..<10) { $0 }
         let dropped = vector.drop.first(3)
 
         #expect(dropped.count == 7)
@@ -595,40 +595,40 @@ extension VectorDropPrefixTests.Drop {
 
     @Test
     func `drop.first with count >= size returns empty vector`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.drop.first(5).isEmpty)
         #expect(vector.drop.first(10).isEmpty)
     }
 
     @Test
     func `drop.first(0) returns equivalent vector`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         let dropped = vector.drop.first(0)
         #expect(dropped.count == 5)
     }
 
     @Test
     func `drop.while returns array (O(n))`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.drop.while { $0 < 5 }
         #expect(result == [5, 6, 7, 8, 9])
     }
 
     @Test
     func `drop.while with always-true predicate returns empty array`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.drop.while { _ in true } == [])
     }
 
     @Test
     func `drop.while with always-false predicate returns all elements`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.drop.while { _ in false } == [0, 1, 2, 3, 4])
     }
 
     @Test
     func `drop.first with transform`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 * 2 }
+        let vector = try Indexed(0..<5) { $0 * 2 }
         let dropped = vector.drop.first(2)
 
         var results: [Int] = []
@@ -641,8 +641,8 @@ extension VectorDropPrefixTests.Drop {
 extension VectorDropPrefixTests.Prefix {
 
     @Test
-    func `prefix.first returns Vector with adjusted end (O(1))`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+    func `prefix.first returns Indexed with adjusted end (O(1))`() throws(VectorTestError) {
+        let vector = try Indexed(0..<10) { $0 }
         let prefixed = vector.prefix.first(3)
 
         #expect(prefixed.count == 3)
@@ -655,39 +655,39 @@ extension VectorDropPrefixTests.Prefix {
 
     @Test
     func `prefix.first with count >= size returns equivalent vector`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.prefix.first(5).count == 5)
         #expect(vector.prefix.first(10).count == 5)
     }
 
     @Test
     func `prefix.first(0) returns empty vector`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.prefix.first(0).isEmpty)
     }
 
     @Test
     func `prefix.while returns array (O(n))`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.prefix.while { $0 < 5 }
         #expect(result == [0, 1, 2, 3, 4])
     }
 
     @Test
     func `prefix.while with always-true predicate returns all elements`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.prefix.while { _ in true } == [0, 1, 2, 3, 4])
     }
 
     @Test
     func `prefix.while with always-false predicate returns empty array`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 }
+        let vector = try Indexed(0..<5) { $0 }
         #expect(vector.prefix.while { _ in false } == [])
     }
 
     @Test
     func `prefix.first with transform`() throws(VectorTestError) {
-        let vector = try Vector(0..<5) { $0 * 2 }
+        let vector = try Indexed(0..<5) { $0 * 2 }
         let prefixed = vector.prefix.first(3)
 
         var results: [Int] = []
@@ -701,7 +701,7 @@ extension VectorDropPrefixTests.Chaining {
 
     @Test
     func `drop.first then prefix.first chains correctly (all O(1))`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.drop.first(2).prefix.first(3)
 
         #expect(result.count == 3)
@@ -714,7 +714,7 @@ extension VectorDropPrefixTests.Chaining {
 
     @Test
     func `prefix.first then drop.first chains correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.prefix.first(5).drop.first(2)
 
         #expect(result.count == 3)
@@ -727,7 +727,7 @@ extension VectorDropPrefixTests.Chaining {
 
     @Test
     func `multiple drop.first calls accumulate correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.drop.first(2).drop.first(3)
 
         #expect(result.count == 5)
@@ -740,7 +740,7 @@ extension VectorDropPrefixTests.Chaining {
 
     @Test
     func `multiple prefix.first calls take minimum`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.prefix.first(7).prefix.first(3)
 
         #expect(result.count == 3)
@@ -753,7 +753,7 @@ extension VectorDropPrefixTests.Chaining {
 
     @Test
     func `complex chaining maintains correct bounds`() throws(VectorTestError) {
-        let vector = try Vector(0..<20) { $0 }
+        let vector = try Indexed(0..<20) { $0 }
         let result = vector
             .drop.first(5)
             .prefix.first(10)
@@ -773,7 +773,7 @@ extension VectorDropPrefixTests.Reversed {
 
     @Test
     func `reversed drop.first skips from high end`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
         let dropped = reversed.drop.first(3)
 
@@ -787,7 +787,7 @@ extension VectorDropPrefixTests.Reversed {
 
     @Test
     func `reversed prefix.first takes from high end`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
         let prefixed = reversed.prefix.first(3)
 
@@ -801,7 +801,7 @@ extension VectorDropPrefixTests.Reversed {
 
     @Test
     func `reversed drop.while works correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
 
         let result = reversed.drop.while { $0 > 5 }
@@ -810,7 +810,7 @@ extension VectorDropPrefixTests.Reversed {
 
     @Test
     func `reversed prefix.while works correctly`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let reversed = vector.reversed()
 
         let result = reversed.prefix.while { $0 > 5 }
@@ -819,7 +819,7 @@ extension VectorDropPrefixTests.Reversed {
 
     @Test
     func `reversed empty vector drop/prefix`() throws(VectorTestError) {
-        let vector = try Vector(0..<0) { $0 }
+        let vector = try Indexed(0..<0) { $0 }
         let reversed = vector.reversed()
 
         #expect(reversed.drop.first(5).isEmpty)
@@ -839,12 +839,12 @@ extension VectorDropPrefixInvariantTests.Invariants {
     func `INVARIANT: drop.first(n) + prefix.first(m) maintains correct total`()
         throws(VectorTestError)
     {
-        let sizes: [Vector<UInt>.Index.Count] = [0, 1, 5, 20, 100]
+        let sizes: [Indexed<UInt>.Index.Count] = [0, 1, 5, 20, 100]
 
         for size in sizes {
-            let vector = try Vector(count: size)
+            let vector = try Indexed(count: size)
 
-            let dropCandidates: [Vector<UInt>.Index.Count] = [0, 1, size, size + 5]
+            let dropCandidates: [Indexed<UInt>.Index.Count] = [0, 1, size, size + 5]
 
             for dropCount in dropCandidates {
                 let afterDrop = vector.drop.first(dropCount)
@@ -852,7 +852,7 @@ extension VectorDropPrefixInvariantTests.Invariants {
 
                 #expect(afterDrop.count == remaining)
 
-                let prefixCandidates: [Vector<UInt>.Index.Count] = [0, 1, remaining, remaining + 5]
+                let prefixCandidates: [Indexed<UInt>.Index.Count] = [0, 1, remaining, remaining + 5]
 
                 for prefixCount in prefixCandidates {
                     let afterPrefix = afterDrop.prefix.first(prefixCount)
@@ -865,7 +865,7 @@ extension VectorDropPrefixInvariantTests.Invariants {
 
     @Test
     func `INVARIANT: drop.first preserves transform`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 * 3 + 1 }
+        let vector = try Indexed(0..<10) { $0 * 3 + 1 }
         let dropped = vector.drop.first(3)
 
         var results: [Int] = []
@@ -877,7 +877,7 @@ extension VectorDropPrefixInvariantTests.Invariants {
 
     @Test
     func `INVARIANT: prefix.first preserves transform`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 * 3 + 1 }
+        let vector = try Indexed(0..<10) { $0 * 3 + 1 }
         let prefixed = vector.prefix.first(4)
 
         var results: [Int] = []
@@ -890,7 +890,7 @@ extension VectorDropPrefixInvariantTests.Invariants {
     @Test
     func `INVARIANT: drop(0) and prefix(count) are identity operations`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
-            let vector = try Vector(0..<size) { $0 }
+            let vector = try Indexed(0..<size) { $0 }
 
             let afterDrop0 = vector.drop.first(0)
             #expect(afterDrop0.count == vector.count)
@@ -898,14 +898,14 @@ extension VectorDropPrefixInvariantTests.Invariants {
             let afterPrefixAll = vector.prefix.first(vector.count)
             #expect(afterPrefixAll.count == vector.count)
 
-            let afterPrefixMore = vector.prefix.first(vector.count + Vector<Int>.Index.Count(100))
+            let afterPrefixMore = vector.prefix.first(vector.count + Indexed<Int>.Index.Count(100))
             #expect(afterPrefixMore.count == vector.count)
         }
     }
 
     @Test
     func `INVARIANT: order of operations matters`() throws(VectorTestError) {
-        let vector = try Vector(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
 
         let dropThenPrefix = vector.drop.first(3).prefix.first(4)
         let prefixThenDrop = vector.prefix.first(4).drop.first(3)
@@ -937,15 +937,15 @@ extension VectorCardinalDistanceTests.Invariants {
         (1000, 1000),
     ])
     func `INVARIANT: count equals cardinal distance between positions`(
-        start: Vector<UInt>.Index,
-        end: Vector<UInt>.Index
-    ) throws(Vector<UInt>.Error) {
+        start: Indexed<UInt>.Index,
+        end: Indexed<UInt>.Index
+    ) throws(Indexed<UInt>.Error) {
 
         let cardinalDistance = start.position.distance.unchecked(to: end.position)
 
-        let vector = try Vector(start: start, end: end)
+        let vector = try Indexed(start: start, end: end)
 
-        #expect(vector.count == Vector<UInt>.Index.Count(cardinalDistance))
+        #expect(vector.count == Indexed<UInt>.Index.Count(cardinalDistance))
     }
 
     @Test(arguments: [
@@ -957,12 +957,12 @@ extension VectorCardinalDistanceTests.Invariants {
         (100, 105),
     ])
     func `INVARIANT: count matches iteration count exactly`(
-        start: Vector<UInt>.Index,
-        end: Vector<UInt>.Index
-    ) throws(Vector<UInt>.Error) {
-        let vector = try Vector(start: start, end: end)
+        start: Indexed<UInt>.Index,
+        end: Indexed<UInt>.Index
+    ) throws(Indexed<UInt>.Error) {
+        let vector = try Indexed(start: start, end: end)
 
-        var iterationCount: Vector<UInt>.Index.Count = 0
+        var iterationCount: Indexed<UInt>.Index.Count = 0
         vector.forEach { _ in iterationCount += 1 }
 
         #expect(vector.count == iterationCount)
@@ -970,24 +970,24 @@ extension VectorCardinalDistanceTests.Invariants {
 
     @Test
     func `INVARIANT: count preserved through drop and prefix`() {
-        let vector: Vector = Vector(count: 100)
+        let vector: Indexed = Indexed(count: 100)
 
         let dropped = vector.drop.first(30)
         #expect(dropped.count == 70)
 
         let droppedDistance = dropped.start.position.distance.unchecked(to: dropped.end.position)
-        #expect(dropped.count == Vector<UInt>.Index.Count(droppedDistance))
+        #expect(dropped.count == Indexed<UInt>.Index.Count(droppedDistance))
 
         let prefixed = vector.prefix.first(40)
         #expect(prefixed.count == 40)
 
         let prefixedDistance = prefixed.start.position.distance.unchecked(to: prefixed.end.position)
-        #expect(prefixed.count == Vector<UInt>.Index.Count(prefixedDistance))
+        #expect(prefixed.count == Indexed<UInt>.Index.Count(prefixedDistance))
     }
 
     @Test
     func `INVARIANT: reversed vector preserves count`() {
-        let vector: Vector = Vector(count: 100)
+        let vector: Indexed = Indexed(count: 100)
         let reversed = vector.reversed()
 
         #expect(reversed.count == vector.count)
@@ -1007,17 +1007,17 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
     @Test
     func `INVARIANT: vectors exceeding Int.max distance work`() {
 
-        let intMax: Vector<UInt>.Index.Count = Vector<UInt>.Index.Count(UInt(Int.max))
+        let intMax: Indexed<UInt>.Index.Count = Indexed<UInt>.Index.Count(UInt(Int.max))
 
-        let vectorAtLimit: Vector = Vector(count: intMax)
+        let vectorAtLimit: Indexed = Indexed(count: intMax)
         #expect(vectorAtLimit.count == intMax)
 
         let beyondIntMax = intMax + .one
-        let vectorBeyond: Vector = Vector(count: beyondIntMax)
+        let vectorBeyond: Indexed = Indexed(count: beyondIntMax)
         #expect(vectorBeyond.count == beyondIntMax)
 
-        let wellBeyond: Vector<UInt>.Index.Count = intMax + Vector<UInt>.Index.Count(1000)
-        let vectorWellBeyond: Vector = Vector(count: wellBeyond)
+        let wellBeyond: Indexed<UInt>.Index.Count = intMax + Indexed<UInt>.Index.Count(1000)
+        let vectorWellBeyond: Indexed = Indexed(count: wellBeyond)
         #expect(vectorWellBeyond.count == wellBeyond)
     }
 
@@ -1028,22 +1028,22 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
         let distance = intMax + 500
         let end = start + distance
 
-        let vector = Vector(start..<end) { $0 }
+        let vector = Indexed(start..<end) { $0 }
 
-        #expect(vector.count == Vector<UInt>.Index.Count(distance))
+        #expect(vector.count == Indexed<UInt>.Index.Count(distance))
 
         let cardinalDistance = vector.start.position.distance.unchecked(to: vector.end.position)
-        #expect(vector.count == Vector<UInt>.Index.Count(cardinalDistance))
+        #expect(vector.count == Indexed<UInt>.Index.Count(cardinalDistance))
     }
 
     @Test
     func `INVARIANT: vectors near UInt.max work`() {
         let max = UInt.max
 
-        let vectorNearMax = Vector((max - 100)..<max) { $0 }
-        #expect(vectorNearMax.count == Vector<UInt>.Index.Count(100))
+        let vectorNearMax = Indexed((max - 100)..<max) { $0 }
+        #expect(vectorNearMax.count == Indexed<UInt>.Index.Count(100))
 
-        let emptyNearMax = Vector((max - 1)..<(max - 1)) { $0 }
+        let emptyNearMax = Indexed((max - 1)..<(max - 1)) { $0 }
         #expect(emptyNearMax.isEmpty)
         #expect(emptyNearMax.count == .zero)
     }
@@ -1051,9 +1051,9 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
     @Test
     func `INVARIANT: maximum possible vector 0 to UInt.max`() {
 
-        let vector = Vector(0..<UInt.max) { $0 }
+        let vector = Indexed(0..<UInt.max) { $0 }
 
-        #expect(vector.count == Vector<UInt>.Index.Count(UInt.max))
+        #expect(vector.count == Indexed<UInt>.Index.Count(UInt.max))
 
         let distance = vector.start.position.distance.unchecked(to: vector.end.position)
         #expect(distance.rawValue == UInt.max)
@@ -1062,7 +1062,7 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
     @Test
     func `INVARIANT: drop and prefix near UInt.max`() {
         let max = UInt.max
-        let vector = Vector((max - 50)..<max) { $0 }
+        let vector = Indexed((max - 50)..<max) { $0 }
 
         let dropped = vector.drop.first(20)
         #expect(dropped.count == 30)
@@ -1078,7 +1078,7 @@ extension VectorTests.Unit {
         enum Domain {}
         let start = Tagged<Domain, Ordinal>(2)
         let end = Tagged<Domain, Ordinal>(5)
-        let vector = Vector(start..<end)
+        let vector = Indexed(start..<end)
         #expect(vector[.init(0)] == start)
         #expect(vector[.init(2)] == Tagged<Domain, Ordinal>(4))
         #expect(vector.reversed()[.init(0)] == Tagged<Domain, Ordinal>(4))

@@ -6,11 +6,11 @@ public import Tagged
 public func ..< <Tag: ~Copyable & ~Escapable>(
     lhs: Index<Tag>,
     rhs: Index<Tag>.Count
-) -> Vector<Index<Tag>> {
-    let start: Vector<Index<Tag>>.Index = lhs.retag()
-    let end: Vector<Index<Tag>>.Index = rhs.map { Ordinal::Ordinal($0) }.retag()
+) -> Indexed<Index<Tag>> {
+    let start: Indexed<Index<Tag>>.Index = lhs.retag()
+    let end: Indexed<Index<Tag>>.Index = rhs.map { Ordinal::Ordinal($0) }.retag()
 
-    return Vector(
+    return Indexed(
         __unchecked: (),
         start: start,
         end: end,

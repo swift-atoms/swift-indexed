@@ -1,13 +1,13 @@
 public import Cardinal
 public import Tagged
 
-extension Vector.Iterator: IteratorProtocol
+extension Indexed.Iterator: IteratorProtocol
 where Bound: Copyable {}
 
-extension Vector.Reversed.Iterator: IteratorProtocol
+extension Indexed.Reversed.Iterator: IteratorProtocol
 where Bound: Copyable {}
 
-extension Vector where Bound: Copyable {
+extension Indexed where Bound: Copyable {
 
     @inlinable
     public mutating func removeAll() {
@@ -15,7 +15,7 @@ extension Vector where Bound: Copyable {
     }
 }
 
-extension Vector.Reversed where Bound: Copyable {
+extension Indexed.Reversed where Bound: Copyable {
 
     @inlinable
     public mutating func removeAll() {
@@ -23,13 +23,13 @@ extension Vector.Reversed where Bound: Copyable {
     }
 }
 
-extension Vector: Swift.Sequence where Bound: Copyable {
+extension Indexed: Swift.Sequence where Bound: Copyable {
 
     @inlinable
     public var underestimatedCount: Int { Int(clamping: count.underlying.rawValue) }
 }
 
-extension Vector.Reversed: Swift.Sequence where Bound: Copyable {
+extension Indexed.Reversed: Swift.Sequence where Bound: Copyable {
 
     @inlinable
     public var underestimatedCount: Int { Int(clamping: count.underlying.rawValue) }

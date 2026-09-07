@@ -1,9 +1,9 @@
 import Index_Test_Support
 public import Ordinal
 public import Tagged
-public import Vector
+public import Indexed
 
-extension Vector where Bound == UInt {
+extension Indexed where Bound == UInt {
 
     public init(
         _ range: Swift.Range<UInt>,
@@ -12,8 +12,8 @@ extension Vector where Bound == UInt {
 
         self.init(
             __unchecked: (),
-            start: Vector<UInt>.Index(_unchecked: Ordinal::Ordinal(range.lowerBound)),
-            end: Vector<UInt>.Index(_unchecked: Ordinal::Ordinal(range.upperBound)),
+            start: Indexed<UInt>.Index(_unchecked: Ordinal::Ordinal(range.lowerBound)),
+            end: Indexed<UInt>.Index(_unchecked: Ordinal::Ordinal(range.upperBound)),
             transform: { transform($0.position.rawValue) }
         )
     }
@@ -22,17 +22,17 @@ extension Vector where Bound == UInt {
 
     @inlinable
     public init(
-        count: Vector<UInt>.Index.Count,
+        count: Indexed<UInt>.Index.Count,
         transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
     ) {
         self.init(count: count, transform: { $0.position.rawValue })
     }
 
     public init(
-        start: Vector<UInt>.Index,
-        end: Vector<UInt>.Index,
+        start: Indexed<UInt>.Index,
+        end: Indexed<UInt>.Index,
         transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
-    ) throws(Vector<UInt>.Error) {
+    ) throws(Indexed<UInt>.Error) {
         try self.init(start: start, end: end, transform: { $0.position.rawValue })
     }
     #endif
@@ -43,7 +43,7 @@ public enum VectorTestError: Swift.Error {
     case countOverflow
 }
 
-extension Vector where Bound == Int {
+extension Indexed where Bound == Int {
 
     public init(
         _ range: Swift.Range<Swift.Int>,
@@ -61,8 +61,8 @@ extension Vector where Bound == Int {
 
         self.init(
             __unchecked: (),
-            start: Vector<Int>.Index(_unchecked: .zero),
-            end: Vector<Int>.Index(_unchecked: Ordinal::Ordinal(count)),
+            start: Indexed<Int>.Index(_unchecked: .zero),
+            end: Indexed<Int>.Index(_unchecked: Ordinal::Ordinal(count)),
             transform: { transform(offset + Swift.Int(bitPattern: $0.position.rawValue)) }
         )
     }

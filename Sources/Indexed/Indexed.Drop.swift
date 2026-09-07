@@ -2,27 +2,27 @@ public import Cardinal
 public import Ordinal
 public import Tagged
 
-extension Vector {
+extension Indexed {
 
     public struct Drop: ~Copyable {
         @usableFromInline
-        var base: Vector<Bound>
+        var base: Indexed<Bound>
 
         @inlinable
-        package init(_ base: Vector<Bound>) {
+        package init(_ base: Indexed<Bound>) {
             self.base = base
         }
     }
 }
 
-extension Vector.Drop where Bound: Copyable {
+extension Indexed.Drop where Bound: Copyable {
 
     @inlinable
     public consuming func first(
-        _ count: Vector<Bound>.Index.Count
-    ) -> Vector<Bound> {
+        _ count: Indexed<Bound>.Index.Count
+    ) -> Indexed<Bound> {
         let newStart = base.start.advance.clamped(by: count, to: base.end)
-        return Vector<Bound>(
+        return Indexed<Bound>(
             __unchecked: (),
             start: newStart,
             end: base.end,
@@ -51,7 +51,7 @@ extension Vector.Drop where Bound: Copyable {
     }
 }
 
-extension Vector where Bound: Copyable {
+extension Indexed where Bound: Copyable {
 
     @inlinable
     public var drop: Drop {
