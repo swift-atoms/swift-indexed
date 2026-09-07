@@ -6,13 +6,13 @@ import Indexed_Test_Support
 
 @testable import Indexed
 
-enum VectorTests {
-    @Suite struct Unit {}
+enum `Indexed values generate elements` {
+    @Suite struct `Unit` {}
     @Suite struct `Edge Case` {}
-    @Suite struct Performance {}
+    @Suite struct `Performance` {}
 }
 
-extension VectorTests.Unit {
+extension `Indexed values generate elements`.Unit {
 
     @Test
     func `init creates vector with correct bounds`() throws(VectorTestError) {
@@ -100,7 +100,7 @@ extension VectorTests.Unit {
     }
 }
 
-extension VectorTests.`Edge Case` {
+extension `Indexed values generate elements`.`Edge Case` {
 
     @Test
     func `empty vector forEach does nothing`() throws(VectorTestError) {
@@ -148,12 +148,12 @@ extension VectorTests.`Edge Case` {
     }
 }
 
-enum VectorReversedTests {
-    @Suite struct Unit {}
+enum `Reversed indexed values generate elements` {
+    @Suite struct `Unit` {}
     @Suite struct `Edge Case` {}
 }
 
-extension VectorReversedTests.Unit {
+extension `Reversed indexed values generate elements`.Unit {
 
     @Test
     func `reversed count matches original`() throws(VectorTestError) {
@@ -197,7 +197,7 @@ extension VectorReversedTests.Unit {
 
 }
 
-extension VectorReversedTests.`Edge Case` {
+extension `Reversed indexed values generate elements`.`Edge Case` {
 
     @Test
     func `empty reversed vector works`() throws(VectorTestError) {
@@ -218,15 +218,15 @@ extension VectorReversedTests.`Edge Case` {
     }
 }
 
-enum VectorInvariantTests {
-    @Suite struct Iterator {}
-    @Suite struct Consistency {}
-    @Suite struct Drain {}
-    @Suite struct Symmetry {}
-    @Suite struct Boundaries {}
+enum `Indexed iteration preserves bounds` {
+    @Suite struct `Iterator` {}
+    @Suite struct `Consistency` {}
+    @Suite struct `Drain` {}
+    @Suite struct `Symmetry` {}
+    @Suite struct `Boundaries` {}
 }
 
-extension VectorInvariantTests.Iterator {
+extension `Indexed iteration preserves bounds`.Iterator {
 
     @Test
     func `INVARIANT: Iterator returns nil forever after exhaustion`() throws(VectorTestError) {
@@ -306,7 +306,7 @@ extension VectorInvariantTests.Iterator {
     }
 }
 
-extension VectorInvariantTests.Consistency {
+extension `Indexed iteration preserves bounds`.Consistency {
 
     @Test
     func `INVARIANT: contains(predicate) == (first(predicate) != nil)`() throws(VectorTestError) {
@@ -375,7 +375,7 @@ extension VectorInvariantTests.Consistency {
     }
 }
 
-extension VectorInvariantTests.Drain {
+extension `Indexed iteration preserves bounds`.Drain {
 
     @Test
     func `INVARIANT: drain empties the vector completely`() throws(VectorTestError) {
@@ -425,7 +425,7 @@ extension VectorInvariantTests.Drain {
     }
 }
 
-extension VectorInvariantTests.Symmetry {
+extension `Indexed iteration preserves bounds`.Symmetry {
 
     @Test
     func `INVARIANT: Forward + Reversed cover all elements exactly once`() throws(VectorTestError) {
@@ -468,7 +468,7 @@ extension VectorInvariantTests.Symmetry {
 
 }
 
-extension VectorInvariantTests.Boundaries {
+extension `Indexed iteration preserves bounds`.Boundaries {
 
     @Test
     func `INVARIANT: Offset vectors work correctly`() throws(VectorTestError) {
@@ -547,11 +547,11 @@ extension VectorInvariantTests.Boundaries {
     }
 }
 
-enum VectorStressTests {
-    @Suite struct Stress {}
+enum `Indexed iteration handles repeated traversal` {
+    @Suite struct `Stress` {}
 }
 
-extension VectorStressTests.Stress {
+extension `Indexed iteration handles repeated traversal`.Stress {
 
     @Test
     func `STRESS: Many small vectors maintain invariants`() throws(VectorTestError) {
@@ -570,14 +570,14 @@ extension VectorStressTests.Stress {
 
 }
 
-enum VectorDropPrefixTests {
-    @Suite struct Drop {}
-    @Suite struct Prefix {}
-    @Suite struct Chaining {}
-    @Suite struct Reversed {}
+enum `Indexed slicing preserves order` {
+    @Suite struct `Drop` {}
+    @Suite struct `Prefix` {}
+    @Suite struct `Chaining` {}
+    @Suite struct `Reversed` {}
 }
 
-extension VectorDropPrefixTests.Drop {
+extension `Indexed slicing preserves order`.Drop {
 
     @Test
     func `drop.first returns Indexed with adjusted start (O(1))`() throws(VectorTestError) {
@@ -637,7 +637,7 @@ extension VectorDropPrefixTests.Drop {
     }
 }
 
-extension VectorDropPrefixTests.Prefix {
+extension `Indexed slicing preserves order`.Prefix {
 
     @Test
     func `prefix.first returns Indexed with adjusted end (O(1))`() throws(VectorTestError) {
@@ -696,7 +696,7 @@ extension VectorDropPrefixTests.Prefix {
     }
 }
 
-extension VectorDropPrefixTests.Chaining {
+extension `Indexed slicing preserves order`.Chaining {
 
     @Test
     func `drop.first then prefix.first chains correctly (all O(1))`() throws(VectorTestError) {
@@ -768,7 +768,7 @@ extension VectorDropPrefixTests.Chaining {
     }
 }
 
-extension VectorDropPrefixTests.Reversed {
+extension `Indexed slicing preserves order`.Reversed {
 
     @Test
     func `reversed drop.first skips from high end`() throws(VectorTestError) {
@@ -828,11 +828,11 @@ extension VectorDropPrefixTests.Reversed {
     }
 }
 
-enum VectorDropPrefixInvariantTests {
-    @Suite struct Invariants {}
+enum `Indexed slicing preserves bounds` {
+    @Suite struct `Invariants` {}
 }
 
-extension VectorDropPrefixInvariantTests.Invariants {
+extension `Indexed slicing preserves bounds`.Invariants {
 
     @Test
     func `INVARIANT: drop.first(n) + prefix.first(m) maintains correct total`()
@@ -922,12 +922,12 @@ extension VectorDropPrefixInvariantTests.Invariants {
     }
 }
 
-enum VectorCardinalDistanceTests {
-    @Suite struct Invariants {}
-    @Suite struct `Large Vectors` {}
+enum `Indexed counts preserve cardinal distance` {
+    @Suite struct `Invariants` {}
+    @Suite struct `Large indexed values` {}
 }
 
-extension VectorCardinalDistanceTests.Invariants {
+extension `Indexed counts preserve cardinal distance`.Invariants {
     @Test(arguments: [
         (0, 0),
         (0, 1),
@@ -1001,7 +1001,7 @@ extension VectorCardinalDistanceTests.Invariants {
     }
 }
 
-extension VectorCardinalDistanceTests.`Large Vectors` {
+extension `Indexed counts preserve cardinal distance`.`Large indexed values` {
 
     @Test
     func `INVARIANT: vectors exceeding Int.max distance work`() {
@@ -1071,7 +1071,7 @@ extension VectorCardinalDistanceTests.`Large Vectors` {
     }
 }
 
-extension VectorTests.Unit {
+extension `Indexed values generate elements`.Unit {
     @Test
     func `index vector offsets respect forward and reversed bounds`() {
         enum Domain {}
