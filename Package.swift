@@ -12,19 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-
-        .library(
-            name: "Vector",
-            targets: ["Vector"]
-        ),
-        .library(
-            name: "Vector Standard Library Integration",
-            targets: ["Vector Standard Library Integration"]
-        ),
-        .library(
-            name: "Vector Test Support",
-            targets: ["Vector Test Support"]
-        ),
+        .library(name: "Vector", targets: ["Vector"]),
+        .library(name: "Vector Standard Library Integration", targets: ["Vector Standard Library Integration"]),
+        .library(name: "Vector Foundation Library Integration", targets: ["Vector Foundation Library Integration"]),
+        .library(name: "Vector Test Support", targets: ["Vector Test Support"]),
     ],
     dependencies: [
         .package(
@@ -53,7 +44,6 @@ let package = Package(
         ),
     ],
     targets: [
-
         .target(
             name: "Vector",
             dependencies: [
@@ -63,25 +53,28 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Affine", package: "swift-affine"),
-            ]
+            ],
+            path: "Sources/Vector"
         ),
-
         .target(
             name: "Vector Standard Library Integration",
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
-                .product(
-                    name: "Cardinal Standard Library Integration",
-                    package: "swift-cardinal"
-                ),
+                .product(name: "Cardinal Standard Library Integration", package: "swift-cardinal"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(
-                    name: "Ordinal Standard Library Integration",
-                    package: "swift-ordinal"
-                ),
-            ]
+                .product(name: "Ordinal Standard Library Integration", package: "swift-ordinal"),
+                .target(name: "Vector"),
+            ],
+            path: "Sources/Vector Standard Library Integration"
         ),
-
+        .target(
+            name: "Vector Foundation Library Integration",
+            dependencies: [
+                .target(name: "Vector"),
+                .target(name: "Vector Standard Library Integration"),
+            ],
+            path: "Sources/Vector Foundation Library Integration"
+        ),
         .target(
             name: "Vector Test Support",
             dependencies: [
@@ -99,19 +92,19 @@ let package = Package(
                 .target(name: "Vector Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .product(
-                    name: "Tagged Standard Library Integration",
-                    package: "swift-tagged"
-                ),
+                .product(name: "Tagged Standard Library Integration", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-            ]
+                .target(name: "Vector Standard Library Integration"),
+                .target(name: "Vector Foundation Library Integration"),
+            ],
+            path: "Tests/Vector Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -120,8 +113,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
