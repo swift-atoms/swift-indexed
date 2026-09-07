@@ -1,9 +1,8 @@
 public import Cardinal
 public import Index
 public import Ordinal
-public import Property_Inout
+public import Property
 public import Tagged
-internal import Property
 
 public struct Vector<Bound: ~Copyable> {
 

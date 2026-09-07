@@ -59,7 +59,6 @@ let package = Package(
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Property", package: "swift-property"),
-                .product(name: "Property Inout", package: "swift-property"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
