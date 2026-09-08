@@ -7,12 +7,12 @@ import Indexed_Test_Support
 @testable import Indexed
 
 enum `Indexed values generate elements` {
-    @Suite struct `Unit` {}
-    @Suite struct `Edge Case` {}
-    @Suite struct `Performance` {}
+    @Suite struct `Indexed values generate transformed elements within their bounds` {}
+    @Suite struct `Indexed values preserve traversal behavior at empty and singleton bounds` {}
+    @Suite struct `No indexed value performance cases are defined` {}
 }
 
-extension `Indexed values generate elements`.Unit {
+extension `Indexed values generate elements`.`Indexed values generate transformed elements within their bounds` {
 
     @Test
     func `init creates vector with correct bounds`() throws(VectorTestError) {
@@ -100,7 +100,7 @@ extension `Indexed values generate elements`.Unit {
     }
 }
 
-extension `Indexed values generate elements`.`Edge Case` {
+extension `Indexed values generate elements`.`Indexed values preserve traversal behavior at empty and singleton bounds` {
 
     @Test
     func `empty vector forEach does nothing`() throws(VectorTestError) {
@@ -149,11 +149,11 @@ extension `Indexed values generate elements`.`Edge Case` {
 }
 
 enum `Reversed indexed values generate elements` {
-    @Suite struct `Unit` {}
-    @Suite struct `Edge Case` {}
+    @Suite struct `Reversed indexed values visit matching elements from the end` {}
+    @Suite struct `Reversed indexed values preserve empty and singleton traversal` {}
 }
 
-extension `Reversed indexed values generate elements`.Unit {
+extension `Reversed indexed values generate elements`.`Reversed indexed values visit matching elements from the end` {
 
     @Test
     func `reversed count matches original`() throws(VectorTestError) {
@@ -197,7 +197,7 @@ extension `Reversed indexed values generate elements`.Unit {
 
 }
 
-extension `Reversed indexed values generate elements`.`Edge Case` {
+extension `Reversed indexed values generate elements`.`Reversed indexed values preserve empty and singleton traversal` {
 
     @Test
     func `empty reversed vector works`() throws(VectorTestError) {
@@ -219,14 +219,14 @@ extension `Reversed indexed values generate elements`.`Edge Case` {
 }
 
 enum `Indexed iteration preserves bounds` {
-    @Suite struct `Iterator` {}
-    @Suite struct `Consistency` {}
-    @Suite struct `Drain` {}
-    @Suite struct `Symmetry` {}
-    @Suite struct `Boundaries` {}
+    @Suite struct `Indexed iterators remain exhausted after visiting their complete extent` {}
+    @Suite struct `Indexed search and count results agree with their predicates` {}
+    @Suite struct `Draining indexed values empties forward and reversed traversal` {}
+    @Suite struct `Forward and reversed indexed traversal preserve elements and matching counts` {}
+    @Suite struct `Indexed iteration preserves transformed values across offset and numeric boundaries` {}
 }
 
-extension `Indexed iteration preserves bounds`.Iterator {
+extension `Indexed iteration preserves bounds`.`Indexed iterators remain exhausted after visiting their complete extent` {
 
     @Test
     func `INVARIANT: Iterator returns nil forever after exhaustion`() throws(VectorTestError) {
@@ -306,10 +306,10 @@ extension `Indexed iteration preserves bounds`.Iterator {
     }
 }
 
-extension `Indexed iteration preserves bounds`.Consistency {
+extension `Indexed iteration preserves bounds`.`Indexed search and count results agree with their predicates` {
 
     @Test
-    func `INVARIANT: contains(predicate) == (first(predicate) != nil)`() throws(VectorTestError) {
+    func `Indexed containment agrees with the existence of a first matching element`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
             var vector1 = try Indexed(0..<size) { $0 }
             var vector2 = try Indexed(0..<size) { $0 }
@@ -330,7 +330,7 @@ extension `Indexed iteration preserves bounds`.Consistency {
     }
 
     @Test
-    func `INVARIANT: count(where: { true }) == count property`() throws(VectorTestError) {
+    func `Counting every indexed element agrees with the stored count`() throws(VectorTestError) {
         for size in [0, 1, 5, 100] {
             let vector = try Indexed(0..<size) { $0 }
             let countWhere = vector.count(where: { _ in true })
@@ -342,7 +342,7 @@ extension `Indexed iteration preserves bounds`.Consistency {
     }
 
     @Test
-    func `INVARIANT: count(where: { false }) == 0`() throws(VectorTestError) {
+    func `Counting with a false predicate returns zero for every indexed extent`() throws(VectorTestError) {
         for size in [0, 1, 5, 100] {
             let vector = try Indexed(0..<size) { $0 }
             let countWhere = vector.count(where: { _ in false })
@@ -375,7 +375,7 @@ extension `Indexed iteration preserves bounds`.Consistency {
     }
 }
 
-extension `Indexed iteration preserves bounds`.Drain {
+extension `Indexed iteration preserves bounds`.`Draining indexed values empties forward and reversed traversal` {
 
     @Test
     func `INVARIANT: drain empties the vector completely`() throws(VectorTestError) {
@@ -425,7 +425,7 @@ extension `Indexed iteration preserves bounds`.Drain {
     }
 }
 
-extension `Indexed iteration preserves bounds`.Symmetry {
+extension `Indexed iteration preserves bounds`.`Forward and reversed indexed traversal preserve elements and matching counts` {
 
     @Test
     func `INVARIANT: Forward + Reversed cover all elements exactly once`() throws(VectorTestError) {
@@ -454,7 +454,7 @@ extension `Indexed iteration preserves bounds`.Symmetry {
     }
 
     @Test
-    func `INVARIANT: count(where:) same for forward and reversed`() throws(VectorTestError) {
+    func `Forward and reversed indexed traversal count the same matching elements`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
             let vector1 = try Indexed(0..<size) { $0 }
             let vector2 = try Indexed(0..<size) { $0 }
@@ -468,7 +468,7 @@ extension `Indexed iteration preserves bounds`.Symmetry {
 
 }
 
-extension `Indexed iteration preserves bounds`.Boundaries {
+extension `Indexed iteration preserves bounds`.`Indexed iteration preserves transformed values across offset and numeric boundaries` {
 
     @Test
     func `INVARIANT: Offset vectors work correctly`() throws(VectorTestError) {
@@ -494,7 +494,7 @@ extension `Indexed iteration preserves bounds`.Boundaries {
     }
 
     @Test
-    func `INVARIANT: Transform with overflow-safe arithmetic`() throws(VectorTestError) {
+    func `Indexed transformations preserve representable values near Int max`() throws(VectorTestError) {
 
         let vector = try Indexed(0..<5) { Int.max - 10 + $0 }
         var results: [Int] = []
@@ -548,10 +548,10 @@ extension `Indexed iteration preserves bounds`.Boundaries {
 }
 
 enum `Indexed iteration handles repeated traversal` {
-    @Suite struct `Stress` {}
+    @Suite struct `Repeated indexed traversals preserve counts and element order` {}
 }
 
-extension `Indexed iteration handles repeated traversal`.Stress {
+extension `Indexed iteration handles repeated traversal`.`Repeated indexed traversals preserve counts and element order` {
 
     @Test
     func `STRESS: Many small vectors maintain invariants`() throws(VectorTestError) {
@@ -571,13 +571,13 @@ extension `Indexed iteration handles repeated traversal`.Stress {
 }
 
 enum `Indexed slicing preserves order` {
-    @Suite struct `Drop` {}
-    @Suite struct `Prefix` {}
-    @Suite struct `Chaining` {}
-    @Suite struct `Reversed` {}
+    @Suite struct `Indexed dropping removes the requested leading elements` {}
+    @Suite struct `Indexed prefixes retain the requested leading elements` {}
+    @Suite struct `Chained indexed slices preserve their computed bounds` {}
+    @Suite struct `Reversed indexed slices select elements from the high end` {}
 }
 
-extension `Indexed slicing preserves order`.Drop {
+extension `Indexed slicing preserves order`.`Indexed dropping removes the requested leading elements` {
 
     @Test
     func `drop.first returns Indexed with adjusted start (O(1))`() throws(VectorTestError) {
@@ -626,7 +626,7 @@ extension `Indexed slicing preserves order`.Drop {
     }
 
     @Test
-    func `drop.first with transform`() throws(VectorTestError) {
+    func `Dropping indexed elements preserves the transformation of remaining elements`() throws(VectorTestError) {
         let vector = try Indexed(0..<5) { $0 * 2 }
         let dropped = vector.drop.first(2)
 
@@ -637,7 +637,7 @@ extension `Indexed slicing preserves order`.Drop {
     }
 }
 
-extension `Indexed slicing preserves order`.Prefix {
+extension `Indexed slicing preserves order`.`Indexed prefixes retain the requested leading elements` {
 
     @Test
     func `prefix.first returns Indexed with adjusted end (O(1))`() throws(VectorTestError) {
@@ -685,7 +685,7 @@ extension `Indexed slicing preserves order`.Prefix {
     }
 
     @Test
-    func `prefix.first with transform`() throws(VectorTestError) {
+    func `Taking an indexed prefix preserves the transformation of retained elements`() throws(VectorTestError) {
         let vector = try Indexed(0..<5) { $0 * 2 }
         let prefixed = vector.prefix.first(3)
 
@@ -696,7 +696,7 @@ extension `Indexed slicing preserves order`.Prefix {
     }
 }
 
-extension `Indexed slicing preserves order`.Chaining {
+extension `Indexed slicing preserves order`.`Chained indexed slices preserve their computed bounds` {
 
     @Test
     func `drop.first then prefix.first chains correctly (all O(1))`() throws(VectorTestError) {
@@ -768,7 +768,7 @@ extension `Indexed slicing preserves order`.Chaining {
     }
 }
 
-extension `Indexed slicing preserves order`.Reversed {
+extension `Indexed slicing preserves order`.`Reversed indexed slices select elements from the high end` {
 
     @Test
     func `reversed drop.first skips from high end`() throws(VectorTestError) {
@@ -817,7 +817,7 @@ extension `Indexed slicing preserves order`.Reversed {
     }
 
     @Test
-    func `reversed empty vector drop/prefix`() throws(VectorTestError) {
+    func `Dropping and prefixing an empty reversed indexed value remain empty`() throws(VectorTestError) {
         let vector = try Indexed(0..<0) { $0 }
         let reversed = vector.reversed()
 
@@ -829,10 +829,10 @@ extension `Indexed slicing preserves order`.Reversed {
 }
 
 enum `Indexed slicing preserves bounds` {
-    @Suite struct `Invariants` {}
+    @Suite struct `Indexed slicing preserves transformations and order dependent bounds` {}
 }
 
-extension `Indexed slicing preserves bounds`.Invariants {
+extension `Indexed slicing preserves bounds`.`Indexed slicing preserves transformations and order dependent bounds` {
 
     @Test
     func `INVARIANT: drop.first(n) + prefix.first(m) maintains correct total`()
@@ -923,11 +923,11 @@ extension `Indexed slicing preserves bounds`.Invariants {
 }
 
 enum `Indexed counts preserve cardinal distance` {
-    @Suite struct `Invariants` {}
-    @Suite struct `Large indexed values` {}
+    @Suite struct `Indexed counts agree with extent distance before and after slicing` {}
+    @Suite struct `Large indexed extents preserve unsigned counts and sliced bounds` {}
 }
 
-extension `Indexed counts preserve cardinal distance`.Invariants {
+extension `Indexed counts preserve cardinal distance`.`Indexed counts agree with extent distance before and after slicing` {
     @Test(arguments: [
         (0, 0),
         (0, 1),
@@ -968,7 +968,7 @@ extension `Indexed counts preserve cardinal distance`.Invariants {
     }
 
     @Test
-    func `INVARIANT: count preserved through drop and prefix`() {
+    func `Sliced indexed counts agree with the remaining extent distance`() {
         let vector: Indexed = Indexed(count: 100)
 
         let dropped = vector.drop.first(30)
@@ -1001,7 +1001,7 @@ extension `Indexed counts preserve cardinal distance`.Invariants {
     }
 }
 
-extension `Indexed counts preserve cardinal distance`.`Large indexed values` {
+extension `Indexed counts preserve cardinal distance`.`Large indexed extents preserve unsigned counts and sliced bounds` {
 
     @Test
     func `INVARIANT: vectors exceeding Int.max distance work`() {
@@ -1048,7 +1048,7 @@ extension `Indexed counts preserve cardinal distance`.`Large indexed values` {
     }
 
     @Test
-    func `INVARIANT: maximum possible vector 0 to UInt.max`() {
+    func `An indexed extent from zero to UInt max retains its full unsigned count`() {
 
         let vector = Indexed(0..<UInt.max) { $0 }
 
@@ -1059,7 +1059,7 @@ extension `Indexed counts preserve cardinal distance`.`Large indexed values` {
     }
 
     @Test
-    func `INVARIANT: drop and prefix near UInt.max`() {
+    func `Indexed dropping and prefixing preserve counts near UInt max`() {
         let max = UInt.max
         let vector = Indexed((max - 50)..<max) { $0 }
 
@@ -1071,7 +1071,7 @@ extension `Indexed counts preserve cardinal distance`.`Large indexed values` {
     }
 }
 
-extension `Indexed values generate elements`.Unit {
+extension `Indexed values generate elements`.`Indexed values generate transformed elements within their bounds` {
     @Test
     func `index vector offsets respect forward and reversed bounds`() {
         enum Domain {}
