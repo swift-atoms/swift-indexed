@@ -38,10 +38,6 @@ let package = Package(
             url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
-        .package(
-            url: "https://github.com/swift-atoms/swift-affine.git",
-            branch: "main"
-        ),
     ],
     targets: [
         .target(
@@ -52,7 +48,6 @@ let package = Package(
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
-                .product(name: "Affine", package: "swift-affine"),
             ],
             path: "Sources/Indexed"
         ),
