@@ -1,5 +1,5 @@
 public import Cardinal
-public import Ordinal
+import Ordinal
 public import Tagged
 
 extension Indexed where Bound: ~Copyable {

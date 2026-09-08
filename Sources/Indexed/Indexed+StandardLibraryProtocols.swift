@@ -1,5 +1,5 @@
-public import Cardinal
-public import Tagged
+import Cardinal
+import Tagged
 
 extension Indexed where Bound: Copyable {
 
