@@ -1,5 +1,3 @@
-# .github/metadata.yaml
-# Triaged by AI-assisted bulk pass (2026-04-29).
 description: "Typed half-open integer ranges with compile-time-checked index arithmetic and O(1) prefix/drop slicing for Swift."
 topics:
   - primitives
