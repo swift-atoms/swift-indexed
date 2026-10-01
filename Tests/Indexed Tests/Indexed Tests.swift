@@ -68,14 +68,14 @@ extension `Indexed values generate elements`.`Indexed values generate transforme
 
     @Test
     func `first returns matching element`() throws(VectorTestError) {
-        var vector = try Indexed(0..<10) { $0 * 2 }
+        let vector = try Indexed(0..<10) { $0 * 2 }
         let result = vector.first { $0 > 10 }
         #expect(result == 12)
     }
 
     @Test
     func `first returns nil when no match`() throws(VectorTestError) {
-        var vector = try Indexed(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         let result = vector.first { $0 > 100 }
         #expect(result == nil)
     }
@@ -89,13 +89,13 @@ extension `Indexed values generate elements`.`Indexed values generate transforme
 
     @Test
     func `contains returns true when predicate matches`() throws(VectorTestError) {
-        var vector = try Indexed(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         #expect(vector.contains { $0 == 7 })
     }
 
     @Test
     func `contains returns false when predicate doesn't match`() throws(VectorTestError) {
-        var vector = try Indexed(0..<10) { $0 }
+        let vector = try Indexed(0..<10) { $0 }
         #expect(!vector.contains { $0 == 100 })
     }
 }
@@ -112,7 +112,7 @@ extension `Indexed values generate elements`.`Indexed values preserve traversal 
 
     @Test
     func `empty vector first returns nil`() throws(VectorTestError) {
-        var vector = try Indexed(0..<0) { $0 }
+        let vector = try Indexed(0..<0) { $0 }
         #expect(vector.first { _ in true } == nil)
     }
 
@@ -124,7 +124,7 @@ extension `Indexed values generate elements`.`Indexed values preserve traversal 
 
     @Test
     func `single element vector works correctly`() throws(VectorTestError) {
-        var vector = try Indexed(0..<1) { $0 * 10 }
+        let vector = try Indexed(0..<1) { $0 * 10 }
         #expect(vector.count == 1)
         #expect(vector.first { _ in true } == 0)
 
@@ -183,7 +183,7 @@ extension `Reversed indexed values generate elements`.`Reversed indexed values v
     @Test
     func `reversed first finds from end`() throws(VectorTestError) {
         let vector = try Indexed(0..<10) { $0 }
-        var reversed = vector.reversed()
+        let reversed = vector.reversed()
         let result = reversed.first { $0 < 5 }
         #expect(result == 4)
     }
@@ -202,7 +202,7 @@ extension `Reversed indexed values generate elements`.`Reversed indexed values p
     @Test
     func `empty reversed vector works`() throws(VectorTestError) {
         let vector = try Indexed(0..<0) { $0 }
-        var reversed = vector.reversed()
+        let reversed = vector.reversed()
         #expect(reversed.isEmpty)
         #expect(reversed.first { _ in true } == nil)
     }
@@ -311,8 +311,8 @@ extension `Indexed iteration preserves bounds`.`Indexed search and count results
     @Test
     func `Indexed containment agrees with the existence of a first matching element`() throws(VectorTestError) {
         for size in [0, 1, 5, 20] {
-            var vector1 = try Indexed(0..<size) { $0 }
-            var vector2 = try Indexed(0..<size) { $0 }
+            let vector1 = try Indexed(0..<size) { $0 }
+            let vector2 = try Indexed(0..<size) { $0 }
 
             let containsEven = vector1.contains { $0 % 2 == 0 }
             let firstEven = vector2.first { $0 % 2 == 0 }
@@ -321,8 +321,8 @@ extension `Indexed iteration preserves bounds`.`Indexed search and count results
                 "Size \(size): contains(even) = \(containsEven), first != nil = \(firstEven != nil)"
             )
 
-            var vector3 = try Indexed(0..<size) { $0 }
-            var vector4 = try Indexed(0..<size) { $0 }
+            let vector3 = try Indexed(0..<size) { $0 }
+            let vector4 = try Indexed(0..<size) { $0 }
             let containsNegative = vector3.contains { $0 < 0 }
             let firstNegative = vector4.first { $0 < 0 }
             #expect(containsNegative == (firstNegative != nil))
@@ -533,7 +533,7 @@ extension `Indexed iteration preserves bounds`.`Indexed iteration preserves tran
 
     @Test
     func `INVARIANT: first returns first matching, not any matching`() throws(VectorTestError) {
-        var vector = try Indexed(0..<100) { $0 }
+        let vector = try Indexed(0..<100) { $0 }
         let result = vector.first { $0 > 50 }
         #expect(result == 51, "first should return 51, not any value > 50")
     }
@@ -541,7 +541,7 @@ extension `Indexed iteration preserves bounds`.`Indexed iteration preserves tran
     @Test
     func `INVARIANT: reversed first returns last matching from original`() throws(VectorTestError) {
         let vector = try Indexed(0..<100) { $0 }
-        var reversed = vector.reversed()
+        let reversed = vector.reversed()
         let result = reversed.first { $0 < 50 }
         #expect(result == 49, "reversed first should return 49 (last element < 50)")
     }
@@ -841,7 +841,7 @@ extension `Indexed slicing preserves bounds`.`Indexed slicing preserves transfor
         let sizes: [Indexed<UInt>.Index.Count] = [0, 1, 5, 20, 100]
 
         for size in sizes {
-            let vector = try Indexed(count: size)
+            let vector = Indexed(count: size)
 
             let dropCandidates: [Indexed<UInt>.Index.Count] = [0, 1, size, size + 5]
 
