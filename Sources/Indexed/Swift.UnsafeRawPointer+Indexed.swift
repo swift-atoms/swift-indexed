@@ -1,7 +1,7 @@
 public import Index
 public import Ordinal
 
-extension Swift.UnsafeRawPointer {
+extension Swift::UnsafeRawPointer {
 
     @inlinable
     public func advanced<Tag: ~Copyable & ~Escapable>(

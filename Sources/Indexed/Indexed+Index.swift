@@ -6,7 +6,7 @@ extension Indexed {
 
     @inlinable
     public init<Tag: ~Copyable & ~Escapable>(
-        _ range: Swift.Range<Index::Index<Tag>>
+        _ range: Swift::Range<Index::Index<Tag>>
     ) where Bound == Index::Index<Tag> {
         let start: Indexed<Bound>.Index = range.lowerBound.retag()
         let end: Indexed<Bound>.Index = range.upperBound.retag()

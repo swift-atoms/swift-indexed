@@ -2,7 +2,7 @@ public import Cardinal
 public import Index
 public import Ordinal
 
-extension Swift.UnsafeMutableRawBufferPointer {
+extension Swift::UnsafeMutableRawBufferPointer {
 
     @inlinable
     public init<Tag: ~Copyable & ~Escapable>(

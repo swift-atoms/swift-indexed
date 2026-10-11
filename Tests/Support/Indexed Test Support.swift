@@ -6,7 +6,7 @@ public import Indexed
 extension Indexed where Bound == UInt {
 
     public init(
-        _ range: Swift.Range<UInt>,
+        _ range: Swift::Range<UInt>,
         transform: @escaping @Sendable (UInt) -> UInt = { $0 }
     ) {
 
@@ -38,7 +38,7 @@ extension Indexed where Bound == UInt {
     #endif
 }
 
-public enum VectorTestError: Swift.Error {
+public enum VectorTestError: Swift::Error {
 
     case countOverflow
 }
@@ -46,8 +46,8 @@ public enum VectorTestError: Swift.Error {
 extension Indexed where Bound == Int {
 
     public init(
-        _ range: Swift.Range<Swift.Int>,
-        transform: @escaping @Sendable (Swift.Int) -> Swift.Int = { $0 }
+        _ range: Swift::Range<Swift::Int>,
+        transform: @escaping @Sendable (Swift::Int) -> Swift::Int = { $0 }
     ) throws(VectorTestError) {
 
         let distance = range.upperBound - range.lowerBound
@@ -63,7 +63,7 @@ extension Indexed where Bound == Int {
             __unchecked: (),
             start: Indexed<Int>.Index(_unchecked: .zero),
             end: Indexed<Int>.Index(_unchecked: Ordinal::Ordinal(count)),
-            transform: { transform(offset + Swift.Int(bitPattern: $0.position.rawValue)) }
+            transform: { transform(offset + Swift::Int(bitPattern: $0.position.rawValue)) }
         )
     }
 }

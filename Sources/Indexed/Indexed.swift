@@ -12,7 +12,7 @@ public struct Indexed<Bound: ~Copyable> {
 
     public enum Drain {}
 
-    public enum Error: Swift.Error, Hashable, Sendable {
+    public enum Error: Swift::Error, Hashable, Sendable {
 
         case invalidBounds(start: Index, end: Index)
     }
@@ -20,18 +20,10 @@ public struct Indexed<Bound: ~Copyable> {
     @usableFromInline
     var _start: Index
 
-    @inlinable
-    public var start: Index { _start }
-
     public let end: Index
 
     @usableFromInline
     var _count: Index.Count
-
-    @inlinable
-    public var count: Index.Count {
-        _read { yield _count }
-    }
 
     @usableFromInline
     let transform: @Sendable (Index) -> Bound
@@ -51,15 +43,6 @@ public struct Indexed<Bound: ~Copyable> {
             self.current = current
             self.end = end
             self.transform = transform
-        }
-
-        @inlinable
-        public mutating func next() -> Bound? {
-            guard current < end else { return nil }
-            let result = transform(current)
-
-            current += .one
-            return result
         }
     }
 
@@ -114,26 +97,6 @@ public struct Indexed<Bound: ~Copyable> {
                     }
                 }
             }
-
-            @inlinable
-            public mutating func next() -> Bound? {
-                guard !exhausted else { return nil }
-
-                let result = transform(current)
-
-                if current == start {
-                    exhausted = true
-                } else {
-
-                    do throws(Ordinal::Ordinal.Error) {
-                        current = try current.predecessor.exact()
-                    } catch {
-                        exhausted = true
-                    }
-                }
-
-                return result
-            }
         }
 
         @usableFromInline
@@ -176,7 +139,7 @@ public struct Indexed<Bound: ~Copyable> {
         }
 
         @inlinable
-        package mutating func _borrowingForEach<E: Swift.Error>(
+        package mutating func _borrowingForEach<E: Swift::Error>(
             _ body: (borrowing Bound) throws(E) -> Void
         ) throws(E) {
             guard !isEmpty else { return }
@@ -290,6 +253,16 @@ public struct Indexed<Bound: ~Copyable> {
         }
         self.transform = transform
     }
+}
+
+extension Indexed where Bound: ~Copyable {
+    @inlinable
+    public var start: Index { _start }
+
+    @inlinable
+    public var count: Index.Count {
+        _read { yield _count }
+    }
 
     @inlinable
     public var isEmpty: Bool { count == .zero }
@@ -305,7 +278,7 @@ public struct Indexed<Bound: ~Copyable> {
     }
 
     @inlinable
-    package mutating func _borrowingForEach<E: Swift.Error>(
+    package mutating func _borrowingForEach<E: Swift::Error>(
         _ body: (borrowing Bound) throws(E) -> Void
     ) throws(E) {
         var i = start
@@ -345,14 +318,47 @@ public struct Indexed<Bound: ~Copyable> {
     }
 }
 
-extension Indexed: Swift.Sendable where Bound: Swift.Sendable {}
+extension Indexed.Iterator where Bound: ~Copyable {
+    @inlinable
+    public mutating func next() -> Bound? {
+        guard current < end else { return nil }
+        let result = transform(current)
 
-extension Indexed.Iterator: Swift.Sendable where Bound: Swift.Sendable {}
+        current += .one
+        return result
+    }
+}
 
-extension Indexed.Reversed: Swift.Sendable where Bound: Swift.Sendable {}
+extension Indexed.Reversed.Iterator where Bound: ~Copyable {
+    @inlinable
+    public mutating func next() -> Bound? {
+        guard !exhausted else { return nil }
 
-extension Indexed.Reversed.Iterator: Swift.Sendable where Bound: Swift.Sendable {}
+        let result = transform(current)
 
-extension Indexed.Iterator: Swift.Copyable where Bound: Swift.Copyable {}
+        if current == start {
+            exhausted = true
+        } else {
 
-extension Indexed.Reversed.Iterator: Swift.Copyable where Bound: Swift.Copyable {}
+            do throws(Ordinal::Ordinal.Error) {
+                current = try current.predecessor.exact()
+            } catch {
+                exhausted = true
+            }
+        }
+
+        return result
+    }
+}
+
+extension Indexed: Swift::Sendable where Bound: Swift::Sendable {}
+
+extension Indexed.Iterator: Swift::Sendable where Bound: Swift::Sendable {}
+
+extension Indexed.Reversed: Swift::Sendable where Bound: Swift::Sendable {}
+
+extension Indexed.Reversed.Iterator: Swift::Sendable where Bound: Swift::Sendable {}
+
+extension Indexed.Iterator: Swift::Copyable where Bound: Swift::Copyable {}
+
+extension Indexed.Reversed.Iterator: Swift::Copyable where Bound: Swift::Copyable {}

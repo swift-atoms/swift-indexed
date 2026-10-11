@@ -855,7 +855,7 @@ extension `Indexed slicing preserves bounds`.`Indexed slicing preserves transfor
 
                 for prefixCount in prefixCandidates {
                     let afterPrefix = afterDrop.prefix.first(prefixCount)
-                    let expected = Swift.min(prefixCount, remaining)
+                    let expected = Swift::min(prefixCount, remaining)
                     #expect(afterPrefix.count == expected)
                 }
             }
