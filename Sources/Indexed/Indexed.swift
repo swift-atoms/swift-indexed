@@ -78,8 +78,7 @@ public struct Indexed<Bound: ~Copyable> {
             var exhausted: Bool
 
             @inlinable
-            package init(start: Index, end: Index, transform: @escaping @Sendable (Index) -> Bound)
-            {
+            package init(start: Index, end: Index, transform: @escaping @Sendable (Index) -> Bound) {
                 self.start = start
                 self.transform = transform
 

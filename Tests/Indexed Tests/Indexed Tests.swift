@@ -1,8 +1,8 @@
 import Cardinal
+import Indexed_Test_Support
 import Ordinal
 import Tagged
 import Testing
-import Indexed_Test_Support
 
 @testable import Indexed
 
@@ -287,8 +287,7 @@ extension `Indexed iteration preserves bounds`.`Indexed iterators remain exhaust
     }
 
     @Test
-    func `INVARIANT: Reversed iterator count matches vector.count exactly`() throws(VectorTestError)
-    {
+    func `INVARIANT: Reversed iterator count matches vector.count exactly`() throws(VectorTestError) {
         for size in [0, 1, 2, 10, 100, 1000] {
             let vector = try Indexed(0..<size) { $0 }
             var iterator: Indexed<Int>.Reversed.Iterator = vector.reversed().makeIterator()

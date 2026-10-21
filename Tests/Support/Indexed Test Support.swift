@@ -1,7 +1,7 @@
 import Index_Test_Support
+public import Indexed
 public import Ordinal
 public import Tagged
-public import Indexed
 
 extension Indexed where Bound == UInt {
 
@@ -20,21 +20,21 @@ extension Indexed where Bound == UInt {
 
     #if !hasFeature(Embedded)
 
-    @inlinable
-    public init(
-        count: Indexed<UInt>.Index.Count,
-        transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
-    ) {
-        self.init(count: count, transform: { $0.position.rawValue })
-    }
+        @inlinable
+        public init(
+            count: Indexed<UInt>.Index.Count,
+            transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
+        ) {
+            self.init(count: count, transform: { $0.position.rawValue })
+        }
 
-    public init(
-        start: Indexed<UInt>.Index,
-        end: Indexed<UInt>.Index,
-        transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
-    ) throws(Indexed<UInt>.Error) {
-        try self.init(start: start, end: end, transform: { $0.position.rawValue })
-    }
+        public init(
+            start: Indexed<UInt>.Index,
+            end: Indexed<UInt>.Index,
+            transform: @escaping @Sendable (Int) -> Bound = { $0.magnitude }
+        ) throws(Indexed<UInt>.Error) {
+            try self.init(start: start, end: end, transform: { $0.position.rawValue })
+        }
     #endif
 }
 
