@@ -1,0 +1,17 @@
+# swift-indexed
+
+Use this package when you need a lazily generated, finite run of values addressed by typed positions, without storing them. Typical cases are a range of `Index::Index<Tag>` values, or a function of position that should be traversed, sliced, reversed or drained without first being turned into an array. Start from `Indexed<Bound>`, and call `reversed()` on it to get `Indexed<Bound>.Reversed`. The package also adds overloads that let `Swift.UnsafeRawPointer`, `Swift.UnsafeMutableRawPointer`, `Swift.UnsafeRawBufferPointer` and `Swift.UnsafeMutableRawBufferPointer` take an `Index::Index<Tag>` or an `Index::Index<Tag>.Count` directly.
+
+## Laws
+
+- An `Indexed<Bound>` covers the half-open positions from `start` up to but not including `end`. It stores no elements. Every access (iteration, `forEach`, `drain`, `first`, `count(where:)`, `subscript(offset:)`, `prefix.while`, `drop.while`) calls the transform again, and nothing is cached. With a `~Copyable` `Bound`, each visit produces a fresh value.
+- `count` is stored when the value is built and is always the distance from `start` to `end`. Reading it is O(1). It stays exact across the full unsigned range, up to `UInt.max` and beyond `Int.max`.
+- `Indexed.init(start:end:transform:)` fails exactly when `start` is after `end`. `Indexed.init(count:transform:)` starts at position zero.
+- `lhs ..< rhs`, with an `Index::Index<Tag>` on the left and an `Index::Index<Tag>.Count` on the right, treats `rhs` as the end position, not as a length added to `lhs`. It traps if `lhs` lies past that position. Both this form and `Indexed(_:)` over a `Swift.Range` of `Index::Index<Tag>` yield the indices themselves as elements.
+- Forward traversal visits positions in ascending order. `Indexed<Bound>.Reversed` visits exactly the same elements in exactly the reverse order, and keeps the same `count`.
+- `prefix.first(n)` and `drop.first(n)` run in O(1). They keep the transform and narrow the bounds, clamping `n` to `count`: dropping more than `count` gives an empty value, and taking more than `count` gives the whole value. On `Indexed<Bound>.Reversed`, both count from the high end. Chained slices compose, so `drop.first(a).drop.first(b)` equals `drop.first(a + b)`, and `prefix.first(a).prefix.first(b)` keeps the smaller of `a` and `b`. Drop and prefix do not commute.
+- `prefix.while` and `drop.while` evaluate the elements eagerly, in traversal order, and return a `Swift.Array`. `prefix.while` stops at the first element that fails the predicate. `drop.while` removes only the leading run of matching elements.
+- `subscript(offset:)` traps unless 0 ≤ offset < `count`. On `Indexed<Bound>.Reversed`, offset 0 is the last forward element.
+- `forEach` works on a copy and leaves the value unchanged. `drain` hands each element over once, consuming it, in traversal order, and then leaves the value empty. `removeAll()` empties the value without visiting any element. For a forward value, emptying sets `start` to `end` and `count` to zero, so the range is preserved at the end and nothing is generated afterwards. A second `drain` visits nothing.
+- Once an iterator has returned `nil`, it returns `nil` forever.
+- In the raw-pointer overloads, an `Index::Index<Tag>` is used directly as a byte offset, and an `Index::Index<Tag>.Count` as a byte count or alignment. They check no bounds beyond what the standard library itself checks.
